@@ -13,8 +13,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\Guzzle\ClientFactory;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Logger\LoggerFactory;
 use Psr\Container\ContainerInterface;
 
 abstract class AbstractController
@@ -36,4 +38,16 @@ abstract class AbstractController
      * @var ResponseInterface
      */
     protected $response;
+
+    /**
+     * @Inject
+     * @var ClientFactory
+     */
+    protected $clientFactory;
+
+    /**
+     * @Inject
+     * @var LoggerFactory
+     */
+    protected $logger;
 }

@@ -26,7 +26,7 @@
         "hyperf/event": "~1.1.0",
         "hyperf/exception-handler": "~1.1.0",
         "hyperf/framework": "~1.1.0",
-        "hyperf/guzzle": "~1.1.0",
+        "hyperf/guzzle": "^1.1",
         "hyperf/http-server": "~1.1.0",
         "hyperf/logger": "~1.1.0",
         "hyperf/memory": "~1.1.0",

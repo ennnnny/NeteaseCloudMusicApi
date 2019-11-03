@@ -10,8 +10,8 @@ declare(strict_types=1);
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
 
-use Hyperf\HttpServer\Router\Router;
+namespace App\Controller;
 
-Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
-
-Router::post('/login/cellphone', 'App\Controller\LoginController@cellPhone');
+class LoginController extends AbstractController
+{
+}
