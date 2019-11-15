@@ -34,7 +34,13 @@
         "hyperf/pool": "~1.1.0",
         "hyperf/process": "~1.1.0",
         "hyperf/redis": "~1.1.0",
-        "hyperf/utils": "~1.1.0"
+        "hyperf/utils": "~1.1.0",
+        "jaeger/querylist": "^4.1",
+        "hyperf/validation": "^1.1",
+        "ext-openssl": "*",
+        "ext-mcrypt": "*",
+        "ext-bcmath": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "^4.2",
