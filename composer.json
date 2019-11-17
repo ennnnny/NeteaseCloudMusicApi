@@ -38,7 +38,6 @@
         "jaeger/querylist": "^4.1",
         "hyperf/validation": "^1.1",
         "ext-openssl": "*",
-        "ext-mcrypt": "*",
         "ext-bcmath": "*",
         "ext-json": "*"
     },

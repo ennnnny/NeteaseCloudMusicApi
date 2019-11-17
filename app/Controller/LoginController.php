@@ -17,6 +17,8 @@ class LoginController extends AbstractController
     /**
      * 手机登录.
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function cellPhone()
     {
@@ -39,7 +41,7 @@ class LoginController extends AbstractController
             unset($data['countrycode']);
         }
         $data['password'] = md5($data['password']);
-        $this->createCloudRequest(
+        return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/login/cellphone',
             $data,
