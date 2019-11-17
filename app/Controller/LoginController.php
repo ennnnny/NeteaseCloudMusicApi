@@ -16,9 +16,9 @@ class LoginController extends AbstractController
 {
     /**
      * 手机登录.
-     * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function cellPhone()
     {

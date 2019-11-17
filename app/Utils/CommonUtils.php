@@ -167,8 +167,8 @@ class CommonUtils
     {
         $dec = 0;
         $len = strlen($hex);
-        for ($i = 1; $i <= $len; $i++) {
-            $dec = bcadd((string)$dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
+        for ($i = 1; $i <= $len; ++$i) {
+            $dec = bcadd((string) $dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
         }
 
         return $dec;
@@ -181,10 +181,10 @@ class CommonUtils
     private function str2hex($string)
     {
         $hex = '';
-        for ($i = 0; $i < strlen($string); $i++) {
+        for ($i = 0; $i < strlen($string); ++$i) {
             $ord = ord($string[$i]);
             $hexCode = dechex($ord);
-            $hex .= substr('0'.$hexCode, -2);
+            $hex .= substr('0' . $hexCode, -2);
         }
 
         return $hex;

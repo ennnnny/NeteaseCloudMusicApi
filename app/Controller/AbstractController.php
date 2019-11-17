@@ -98,9 +98,9 @@ abstract class AbstractController
      * @param $url
      * @param $data
      * @param $options
-     * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function createCloudRequest($method, $url, $data, $options)
     {
@@ -207,7 +207,7 @@ abstract class AbstractController
             $this->logger->make()->error($e);
             return $this->response->json([
                 'code' => 502,
-                'msg' => '请求异常，失败!'
+                'msg' => '请求异常，失败!',
             ])->withStatus(502);
         }
     }
