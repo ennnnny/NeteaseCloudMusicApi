@@ -127,7 +127,7 @@ abstract class AbstractController
 
         $jar = new \GuzzleHttp\Cookie\CookieJar();
         if (isset($options['cookie']) && count($options['cookie']) > 0) {
-            $jar = $jar::fromArray($options['cookie'], '');
+            $jar = $jar::fromArray($options['cookie'], '.music.163.com');
         }
         $client_opt['cookies'] = $jar;
 
@@ -169,7 +169,7 @@ abstract class AbstractController
             if (isset($cookie['MUSIC_A']) && ! empty($cookie['MUSIC_A'])) {
                 $header['MUSIC_A'] = $cookie['MUSIC_A'];
             }
-            $client_opt['cookies'] = $jar::fromArray($header, '');
+            $client_opt['cookies'] = $jar::fromArray($header, '.music.163.com');
             $data['header'] = $header;
             $data = $this->commonUtils->eApi($options['url'], $data);
             $url = str_replace('/\w*api/', 'eapi', $url);
@@ -189,6 +189,9 @@ abstract class AbstractController
             $cookies = $jar->toArray();
             if (count($cookies) > 0) {
                 foreach ($cookies as $cookie) {
+                    if ($cookie['Name'] == 'os' && empty($cookie['Expires'])) {
+                        continue;
+                    }
                     $temp = new Cookie($cookie['Name'], $cookie['Value'], $cookie['Expires'], $cookie['Path'], '', $cookie['Secure'], false);
                     $res = $res->withCookie($temp);
                 }

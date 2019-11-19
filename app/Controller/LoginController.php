@@ -22,6 +22,8 @@ class LoginController extends AbstractController
      */
     public function cellPhone()
     {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
         $validator = $this->validationFactory->make($this->request->all(), [
             'phone' => 'required|regex:/^1[3456789]\d{9}$/i',
             'password' => 'required',
@@ -37,6 +39,7 @@ class LoginController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $data = $validator->validated();
+        $data['rememberLogin'] = 'true';
         if (isset($data['countrycode']) && empty($data['countrycode'])) {
             unset($data['countrycode']);
         }
@@ -45,7 +48,50 @@ class LoginController extends AbstractController
             'POST',
             'https://music.163.com/weapi/login/cellphone',
             $data,
-            ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $cookie]
         );
+    }
+
+    /**
+     * 邮箱登录.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function login()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ], [
+            'email.required' => '邮箱地址必填',
+            'email.email' => '邮箱地址格式错误',
+            'password.required' => '密码必填',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $param = $validator->validated();
+        $data['username'] = $param['email'];
+        $data['password'] = md5($param['password']);
+        $data['rememberLogin'] = 'true';
+        $res = $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/login',
+            $data,
+            ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $cookie]
+        );
+        if ($res->getStatusCode() == 502) {
+            return $this->response->json([
+                'msg' => '账号或密码错误',
+                'code' => 502,
+                'message' => '账号或密码错误',
+            ])->withStatus(200);
+        }
+        return $res;
     }
 }
