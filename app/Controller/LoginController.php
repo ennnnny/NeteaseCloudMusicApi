@@ -23,6 +23,8 @@ class LoginController extends AbstractController
     public function cellPhone()
     {
         $cookie = $this->request->getCookieParams();
+        unset($cookie['p_ip'], $cookie['p_ua']);
+
         $cookie['os'] = 'pc';
         $validator = $this->validationFactory->make($this->request->all(), [
             'phone' => 'required|regex:/^1[3456789]\d{9}$/i',
@@ -61,6 +63,8 @@ class LoginController extends AbstractController
     public function login()
     {
         $cookie = $this->request->getCookieParams();
+        unset($cookie['p_ip'], $cookie['p_ua']);
+
         $cookie['os'] = 'pc';
         $validator = $this->validationFactory->make($this->request->all(), [
             'email' => 'required|email',
@@ -93,5 +97,67 @@ class LoginController extends AbstractController
             ])->withStatus(200);
         }
         return $res;
+    }
+
+    /**
+     * 刷新登录.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function refresh()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/login/token/refresh',
+            [],
+            ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 登录状态
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function status()
+    {
+        $res = $this->createCloudRequest(
+            'GET',
+            'https://music.163.com',
+            [],
+            ['cookie' => $this->request->getCookieParams()]
+        );
+        try {
+            $body = $res->getBody()->getContents();
+            preg_match('/GUser\s*=\s*([^;]+);/', $body, $profile);
+            preg_match('/GBinds\s*=\s*([^;]+);/', $body, $bindings);
+            return $this->response->json([
+                'code' => 200,
+                'profile' => $profile[1],
+                'bindings' => $bindings[1],
+            ]);
+        } catch (\Exception $e) {
+            return $this->response->json([
+                'code' => 301,
+            ])->withStatus(301);
+        }
+    }
+
+    /**
+     * 退出登录.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function logout()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/logout',
+            [],
+            ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $this->request->getCookieParams()]
+        );
     }
 }

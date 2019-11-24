@@ -108,7 +108,12 @@ abstract class AbstractController
             'verify' => false,
             'timeout' => 3.141,
         ];
-        $ua = $this->chooseUserAgent($options['ua'] ?? '');
+        if (isset($options['cookie']['p_ua']) && ! empty($options['cookie']['p_ua'])) {
+            $ua = $options['cookie']['p_ua'];
+            unset($options['cookie']['p_ua']);
+        } else {
+            $ua = $this->chooseUserAgent($options['ua'] ?? '');
+        }
         if (! empty($ua)) {
             $headers['User-Agent'] = $ua;
         }
@@ -120,7 +125,12 @@ abstract class AbstractController
             $headers['Referer'] = 'https://music.163.com';
         }
 
-        $ip = $this->chooseChinaIp();
+        if (isset($options['cookie']['p_ip']) && ! empty($options['cookie']['p_ip'])) {
+            $ip = $options['cookie']['p_ip'];
+            unset($options['cookie']['p_ip']);
+        } else {
+            $ip = $this->chooseChinaIp();
+        }
         if (! empty($ip)) {
             $headers['X-Real-IP'] = $ip;
         }
@@ -131,51 +141,55 @@ abstract class AbstractController
         }
         $client_opt['cookies'] = $jar;
 
-        if ($options['crypto'] == 'weapi') {
-            $data['csrf_token'] = $options['cookie']['__csrf'] ?? '';
+        if (isset($options['crypto'])) {
+            if ($options['crypto'] == 'weapi') {
+                $data['csrf_token'] = $options['cookie']['__csrf'] ?? '';
 
-            $data = $this->commonUtils->weApiRequest(json_encode($data));
-            $url = str_replace('/\w*api/', 'weapi', $url);
-        } elseif ($options['crypto'] == 'linuxapi') {
-            $headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36';
+                $data = $this->commonUtils->weApiRequest(json_encode($data));
+                $url = str_replace('/\w*api/', 'weapi', $url);
+            } elseif ($options['crypto'] == 'linuxapi') {
+                $headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36';
 
-            $data = $this->commonUtils->linuxApi([
-                'method' => $method,
-                'url' => str_replace('/\w*api/', 'api', $url),
-                'params' => $data,
-            ]);
-            $url = 'https://music.163.com/api/linux/forward';
-        } elseif ($options['crypto'] == 'eapi') {
-            $cookie = $options['cookie'] ?? [];
-            $csrfToken = $cookie['__csrf'] ?? '';
-            $now_time = Carbon::now('PRC');
-            $requestId = $now_time->timestamp . $now_time->millisecond . '_' . sprintf('%04d', mt_rand(1, 100));
-            $header = [
-                'osver' => $cookie['osver'], //系统版本
-                'deviceId' => $cookie['deviceId'], //base64_encode(imei + '\t02:00:00:00:00:00\t5106025eb79a5247\t70ffbaac7')
-                'appver' => $cookie['appver'] ?? '6.1.1', //app版本
-                'versioncode' => $cookie['versioncode'] ?? '140', //版本号
-                'mobilename' => $cookie['mobilename'], //设备model
-                'buildver' => $cookie['buildver'] ?? Carbon::now('PRC')->timestamp,
-                'resolution' => $cookie['resolution'] ?? '1920x1080', //设备分辨率
-                '__csrf' => $csrfToken,
-                'os' => $cookie['os'] ?? 'android',
-                'channel' => $cookie['channel'],
-                'requestId' => $requestId,
-            ];
-            if (isset($cookie['MUSIC_U']) && ! empty($cookie['MUSIC_U'])) {
-                $header['MUSIC_U'] = $cookie['MUSIC_U'];
+                $data = $this->commonUtils->linuxApi([
+                    'method' => $method,
+                    'url' => str_replace('/\w*api/', 'api', $url),
+                    'params' => $data,
+                ]);
+                $url = 'https://music.163.com/api/linux/forward';
+            } elseif ($options['crypto'] == 'eapi') {
+                $cookie = $options['cookie'] ?? [];
+                $csrfToken = $cookie['__csrf'] ?? '';
+                $now_time = Carbon::now('PRC');
+                $requestId = $now_time->timestamp . $now_time->millisecond . '_' . sprintf('%04d', mt_rand(1, 100));
+                $header = [
+                    'osver' => $cookie['osver'], //系统版本
+                    'deviceId' => $cookie['deviceId'], //base64_encode(imei + '\t02:00:00:00:00:00\t5106025eb79a5247\t70ffbaac7')
+                    'appver' => $cookie['appver'] ?? '6.1.1', //app版本
+                    'versioncode' => $cookie['versioncode'] ?? '140', //版本号
+                    'mobilename' => $cookie['mobilename'], //设备model
+                    'buildver' => $cookie['buildver'] ?? Carbon::now('PRC')->timestamp,
+                    'resolution' => $cookie['resolution'] ?? '1920x1080', //设备分辨率
+                    '__csrf' => $csrfToken,
+                    'os' => $cookie['os'] ?? 'android',
+                    'channel' => $cookie['channel'],
+                    'requestId' => $requestId,
+                ];
+                if (isset($cookie['MUSIC_U']) && ! empty($cookie['MUSIC_U'])) {
+                    $header['MUSIC_U'] = $cookie['MUSIC_U'];
+                }
+                if (isset($cookie['MUSIC_A']) && ! empty($cookie['MUSIC_A'])) {
+                    $header['MUSIC_A'] = $cookie['MUSIC_A'];
+                }
+                $client_opt['cookies'] = $jar::fromArray($header, '.music.163.com');
+                $data['header'] = $header;
+                $data = $this->commonUtils->eApi($options['url'], $data);
+                $url = str_replace('/\w*api/', 'eapi', $url);
             }
-            if (isset($cookie['MUSIC_A']) && ! empty($cookie['MUSIC_A'])) {
-                $header['MUSIC_A'] = $cookie['MUSIC_A'];
-            }
-            $client_opt['cookies'] = $jar::fromArray($header, '.music.163.com');
-            $data['header'] = $header;
-            $data = $this->commonUtils->eApi($options['url'], $data);
-            $url = str_replace('/\w*api/', 'eapi', $url);
         }
 
         try {
+            dump($client_opt);
+
             $client = $this->clientFactory->create($client_opt);
             $client_params['headers'] = $headers ?? [];
             if ($method == 'GET') {
@@ -183,18 +197,43 @@ abstract class AbstractController
             } elseif ($method == 'POST') {
                 $client_params['form_params'] = $data;
             }
+
+            dump($client_params);
+
             $response = $client->request($method, $url, $client_params);
             //cookie处理
             $res = $this->response;
             $cookies = $jar->toArray();
             if (count($cookies) > 0) {
+                $already_login = false;
                 foreach ($cookies as $cookie) {
-                    if ($cookie['Name'] == 'os' && empty($cookie['Expires'])) {
+                    if ($cookie['Name'] == 'os') {
                         continue;
                     }
-                    $temp = new Cookie($cookie['Name'], $cookie['Value'], $cookie['Expires'], $cookie['Path'], '', $cookie['Secure'], false);
+                    $expires = $cookie['Expires'] ?? 0;
+                    if (empty($cookie['Value'])) {
+                        $expires = Carbon::now()->timestamp;
+                    }
+                    $temp = new Cookie($cookie['Name'], $cookie['Value'], $expires, $cookie['Path'], '', $cookie['Secure'], false);
                     $res = $res->withCookie($temp);
+                    if (in_array($cookie['Name'], ['MUSIC_U', '__csrf', 'MUSIC_A'])) {
+                        if (! empty($cookie['Value'])) {
+                            $already_login = true;
+                        }
+                    }
                 }
+
+                if ($already_login) {//保留此次的参数
+                    $expires_time = Carbon::now()->endOfDay()->timestamp;
+                    $ip_cookie = new Cookie('p_ip', $ip, $expires_time);
+                    $ua_cookie = new Cookie('p_ua', $ua, $expires_time);
+                } else {
+                    $expires_time = Carbon::now()->timestamp;
+                    $ip_cookie = new Cookie('p_ip', '', $expires_time);
+                    $ua_cookie = new Cookie('p_ua', '', $expires_time);
+                }
+                $res = $res->withCookie($ip_cookie);
+                $res = $res->withCookie($ua_cookie);
             }
 
             $code = $response->getStatusCode();

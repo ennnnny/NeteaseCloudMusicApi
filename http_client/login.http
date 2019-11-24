@@ -20,3 +20,18 @@ GET http://{{host}}/login?email={{email}}&password={{email_password}}
 Accept: application/json
 
 ###
+# 刷新登录
+GET http://{{host}}/login/refresh
+Accept: application/json
+
+###
+# 登录状态
+GET http://{{host}}/login/status
+Accept: application/json
+
+###
+# 退出登录
+GET http://{{host}}/logout
+Accept: application/json
+
+###

@@ -1,0 +1,30 @@
+# 发送验证码
+GET http://{{host}}/captcha/sent?phone={{phone}}
+Accept: application/json
+
+###
+# 校验验证码
+GET http://{{host}}/captcha/verify?phone={{phone}}&captcha=9225
+Accept: application/json
+
+###
+# 检测手机号码是否已注册
+GET http://{{host}}/cellphone/existence/check?phone={{phone}}
+Accept: application/json
+
+###
+# 注册(修改密码)
+GET http://{{host}}/register/cellphone?phone={{phone}}&password=123&captcha=123&nickname=123
+Accept: application/json
+
+###
+# 初始化昵称
+GET http://{{host}}/activate/init/profile?nickname=testUser2019
+Accept: application/json
+
+###
+# 更换绑定手机
+GET http://{{host}}/rebind?phone={{phone}}&oldcaptcha=1234&captcha=5678
+Accept: application/json
+
+###
