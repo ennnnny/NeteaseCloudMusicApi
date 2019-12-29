@@ -1,0 +1,10 @@
+# 转发用户动态
+GET http://{{host}}/event/forward?evId=6712917601&uid={{uid}}&forwards=测试内容
+Accept: application/json
+
+###
+# 删除用户动态
+GET http://{{host}}/event/del?evId=6712917601
+Accept: application/json
+
+###

@@ -1,0 +1,41 @@
+###
+# 获取用户详情
+GET http://{{host}}/user/detail?uid={{uid}}
+Accept: application/json
+
+###
+# 获取用户信息 , 歌单，收藏，mv, dj 数量
+GET http://{{host}}/user/subcount
+Accept: application/json
+
+###
+# 更新用户信息
+GET http://{{host}}/user/update?gender=0&signature=测试签名&city=440300&nickname=binary&birthday=1525918298004&province=440000
+Accept: application/json
+
+###
+# 获取用户歌单
+GET http://{{host}}/user/playlist?uid={{uid}}
+Accept: application/json
+
+###
+# 获取用户电台
+GET http://{{host}}/user/dj?uid={{uid}}
+Accept: application/json
+
+###
+# 获取用户关注列表
+GET http://{{host}}/user/follows?uid={{uid}}
+Accept: application/json
+
+###
+# 获取用户粉丝列表
+GET http://{{host}}/user/followeds?uid={{uid}}
+Accept: application/json
+
+###
+# 获取用户动态
+GET http://{{host}}/user/event?uid={{uid}}
+Accept: application/json
+
+###

@@ -1,0 +1,20 @@
+# 更新歌单
+GET http://{{host}}/playlist/update?id=24381616&name=新歌单&desc=描述&tags=学习
+Accept: application/json
+
+###
+# 更新歌单描述
+GET http://{{host}}/playlist/desc/update?id=24381616&desc=描述
+Accept: application/json
+
+###
+# 更新歌单名
+GET http://{{host}}/playlist/name/update?id=24381616&name=歌单名
+Accept: application/json
+
+###
+# 更新歌单标签
+GET http://{{host}}/tags/update?id=24381616&tags=学习
+Accept: application/json
+
+###

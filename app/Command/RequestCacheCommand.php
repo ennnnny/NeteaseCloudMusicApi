@@ -80,7 +80,6 @@ class RequestCacheCommand extends HyperfCommand
             $response = $client->get('https://github.com/17mon/china_ip_list/raw/master/china_ip_list.txt');
             $china_ip_file = $response->getBody()->getContents();
         } catch (RequestException $e) {
-            dump($e);
             $china_ip_file = '';
             $this->error('拉取China_IP文件异常');
         }

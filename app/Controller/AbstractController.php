@@ -162,16 +162,16 @@ abstract class AbstractController
                 $now_time = Carbon::now('PRC');
                 $requestId = $now_time->timestamp . $now_time->millisecond . '_' . sprintf('%04d', mt_rand(1, 100));
                 $header = [
-                    'osver' => $cookie['osver'], //系统版本
-                    'deviceId' => $cookie['deviceId'], //base64_encode(imei + '\t02:00:00:00:00:00\t5106025eb79a5247\t70ffbaac7')
+                    'osver' => $cookie['osver'] ?? '', //系统版本
+                    'deviceId' => $cookie['deviceId'] ?? '', //base64_encode(imei + '\t02:00:00:00:00:00\t5106025eb79a5247\t70ffbaac7')
                     'appver' => $cookie['appver'] ?? '6.1.1', //app版本
                     'versioncode' => $cookie['versioncode'] ?? '140', //版本号
-                    'mobilename' => $cookie['mobilename'], //设备model
+                    'mobilename' => $cookie['mobilename'] ?? '', //设备model
                     'buildver' => $cookie['buildver'] ?? Carbon::now('PRC')->timestamp,
                     'resolution' => $cookie['resolution'] ?? '1920x1080', //设备分辨率
                     '__csrf' => $csrfToken,
                     'os' => $cookie['os'] ?? 'android',
-                    'channel' => $cookie['channel'],
+                    'channel' => $cookie['channel'] ?? '',
                     'requestId' => $requestId,
                 ];
                 if (isset($cookie['MUSIC_U']) && ! empty($cookie['MUSIC_U'])) {
@@ -188,8 +188,6 @@ abstract class AbstractController
         }
 
         try {
-            dump($client_opt);
-
             $client = $this->clientFactory->create($client_opt);
             $client_params['headers'] = $headers ?? [];
             if ($method == 'GET') {
@@ -197,8 +195,6 @@ abstract class AbstractController
             } elseif ($method == 'POST') {
                 $client_params['form_params'] = $data;
             }
-
-            dump($client_params);
 
             $response = $client->request($method, $url, $client_params);
             //cookie处理
