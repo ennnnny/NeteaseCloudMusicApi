@@ -1,0 +1,5 @@
+# 分享歌曲、歌单、mv、电台、电台节目到动态
+GET http://{{host}}/share/resource?id=1297494209&msg=测试
+Accept: application/json
+
+###

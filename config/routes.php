@@ -49,3 +49,7 @@ Router::addGroup('/event/', function () {
     Router::addRoute(['GET', 'POST'], 'forward', 'App\Controller\EventsController@forward'); //转发用户动态
     Router::addRoute(['GET', 'POST'], 'del', 'App\Controller\EventsController@del'); //删除用户动态
 });
+
+Router::addGroup('/share/', function () {
+    Router::addRoute(['GET', 'POST'], 'resource', 'App\Controller\SharesController@resource'); //分享歌曲、歌单、mv、电台、电台节目到动态
+});
