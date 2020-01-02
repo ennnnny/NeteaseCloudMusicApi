@@ -1,0 +1,5 @@
+# 获取动态评论
+GET http://{{host}}/comment/event?threadId=A_EV_2_6559519868_32953014
+Accept: application/json
+
+###

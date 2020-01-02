@@ -39,3 +39,13 @@ GET http://{{host}}/user/event?uid={{uid}}
 Accept: application/json
 
 ###
+# 关注/取消关注用户
+GET http://{{host}}/follow?id=32953014&t=1
+Accept: application/json
+
+###
+# 获取用户播放记录
+GET http://{{host}}/user/record?uid={{uid}}&type=1
+Accept: application/json
+
+###

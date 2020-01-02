@@ -246,4 +246,62 @@ class UsersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 关注/取消关注用户.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function follow()
+    {
+        $cookie = $this->request->getCookieParams();
+        unset($cookie['p_ip'], $cookie['p_ua']);
+
+        $cookie['os'] = 'pc';
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            't' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        $data['t'] = $data['t'] == 1 ? 'follow' : 'delfollow';
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/user/' . $data['t'] . '/' . $data['id'],
+            [],
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 获取用户播放记录.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getRecord()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'uid' => 'required',
+            'type' => '', // 1: 最近一周, 0: 所有时间
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        $data['type'] = $data['type'] ?? 1;
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/play/record',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }
