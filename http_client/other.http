@@ -3,3 +3,8 @@ GET http://{{host}}/hot/topic
 Accept: application/json
 
 ###
+# 智能播放
+GET http://{{host}}/playmode/intelligence/list?id=33894312&pid=24381616
+Accept: application/json
+
+###

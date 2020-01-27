@@ -3,3 +3,8 @@ GET http://{{host}}/comment/event?threadId=A_EV_2_6559519868_32953014
 Accept: application/json
 
 ###
+# 云村热评
+GET http://{{host}}/comment/hotwall/list
+Accept: application/json
+
+###

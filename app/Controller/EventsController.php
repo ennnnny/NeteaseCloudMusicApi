@@ -73,4 +73,22 @@ class EventsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取动态消息.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function index()
+    {
+        $data['pagesize'] = $this->request->input('pagesize', 20);
+        $data['lasttime'] = $this->request->input('lasttime', -1);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/event/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

@@ -8,3 +8,8 @@ GET http://{{host}}/event/del?evId=6712917601
 Accept: application/json
 
 ###
+# 获取动态消息
+GET http://{{host}}/event?pagesize=30&lasttime=1556740526369
+Accept: application/json
+
+###

@@ -47,9 +47,10 @@ Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'tags/update', 'App\Controller\PlayListsController@updateTags'); //更新歌单标签
 });
 
-Router::addGroup('/event/', function () {
-    Router::addRoute(['GET', 'POST'], 'forward', 'App\Controller\EventsController@forward'); //转发用户动态
-    Router::addRoute(['GET', 'POST'], 'del', 'App\Controller\EventsController@del'); //删除用户动态
+Router::addGroup('/event', function () {
+    Router::addRoute(['GET', 'POST'], '/forward', 'App\Controller\EventsController@forward'); //转发用户动态
+    Router::addRoute(['GET', 'POST'], '/del', 'App\Controller\EventsController@del'); //删除用户动态
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\EventsController@index'); //获取动态消息
 });
 
 Router::addGroup('/share/', function () {
@@ -58,6 +59,8 @@ Router::addGroup('/share/', function () {
 
 Router::addGroup('/comment/', function () {
     Router::addRoute(['GET', 'POST'], 'event', 'App\Controller\CommentsController@event'); //获取动态评论
+    Router::addRoute(['GET', 'POST'], 'hotwall/list', 'App\Controller\CommentsController@getHotwallList'); //云村热评
 });
 
 Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题
+Router::addRoute(['GET', 'POST'], '/playmode/intelligence/list', 'App\Controller\OthersController@getIntelligenceList'); //智能播放
