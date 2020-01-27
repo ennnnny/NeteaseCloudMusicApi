@@ -1,0 +1,20 @@
+# 歌手分类
+GET http://{{host}}/artist/list
+Accept: application/json
+
+###
+# 收藏/取消收藏歌手
+GET http://{{host}}/artist/sub?id=6452&t=1
+Accept: application/json
+
+###
+# 歌手热门50首歌曲
+GET http://{{host}}/artist/top/song?id=125527
+Accept: application/json
+
+###
+# 收藏的歌手列表
+GET http://{{host}}/artist/sublist
+Accept: application/json
+
+###

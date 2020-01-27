@@ -64,3 +64,10 @@ Router::addGroup('/comment/', function () {
 
 Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题
 Router::addRoute(['GET', 'POST'], '/playmode/intelligence/list', 'App\Controller\OthersController@getIntelligenceList'); //智能播放
+
+Router::addGroup('/artist/', function () {
+    Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
+    Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\ArtistsController@sub'); //收藏/取消收藏歌手
+    Router::addRoute(['GET', 'POST'], 'top/song', 'App\Controller\ArtistsController@getTopSong'); //歌手热门50首歌曲
+    Router::addRoute(['GET', 'POST'], 'sublist', 'App\Controller\ArtistsController@getSublist'); //收藏的歌手列表
+});
