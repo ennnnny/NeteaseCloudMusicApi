@@ -59,3 +59,5 @@ Router::addGroup('/share/', function () {
 Router::addGroup('/comment/', function () {
     Router::addRoute(['GET', 'POST'], 'event', 'App\Controller\CommentsController@event'); //获取动态评论
 });
+
+Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题

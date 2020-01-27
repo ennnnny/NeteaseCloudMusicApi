@@ -1,0 +1,5 @@
+# 获取热门话题
+GET http://{{host}}/hot/topic
+Accept: application/json
+
+###
