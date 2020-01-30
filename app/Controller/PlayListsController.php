@@ -140,4 +140,36 @@ class PlayListsController extends AbstractController
             ['crypto' => 'eapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/tags/update']
         );
     }
+
+    /**
+     * 歌单分类.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getCatList()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/catalogue',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 热门歌单分类.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getHotList()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/hottags',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }
