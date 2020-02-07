@@ -1,0 +1,10 @@
+# 歌单 ( 网友精选碟 )
+GET http://{{host}}/top/playlist?limit=10&order=new
+Accept: application/json
+
+###
+# 获取精品歌单
+GET http://{{host}}/top/playlist/highquality?before=1503639064232&limit=3
+Accept: application/json
+
+###

@@ -108,12 +108,15 @@ abstract class AbstractController
             'verify' => false,
             'timeout' => 3.141,
         ];
-        if (isset($options['cookie']['p_ua']) && ! empty($options['cookie']['p_ua'])) {
-            $ua = $options['cookie']['p_ua'];
-            unset($options['cookie']['p_ua']);
+
+        $request_ua = $options['ua'] ?? '';
+        if (isset($options['cookie']['p_' . $request_ua . '_ua']) && ! empty($options['cookie']['p_' . $request_ua . '_ua'])) {
+            $ua = $options['cookie']['p_' . $request_ua . '_ua'];
         } else {
-            $ua = $this->chooseUserAgent($options['ua'] ?? '');
+            $ua = $this->chooseUserAgent($request_ua);
         }
+        unset($options['cookie']['p__ua'], $options['cookie']['p_mobile_ua'], $options['cookie']['p_pc_ua']);
+
         if (! empty($ua)) {
             $headers['User-Agent'] = $ua;
         }
@@ -146,13 +149,14 @@ abstract class AbstractController
                 $data['csrf_token'] = $options['cookie']['__csrf'] ?? '';
 
                 $data = $this->commonUtils->weApiRequest(json_encode($data));
-                $url = str_replace('/\w*api/', 'weapi', $url);
+                $url = preg_replace('/\w*api/', 'weapi', $url);
             } elseif ($options['crypto'] == 'linuxapi') {
                 $headers['User-Agent'] = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36';
 
+                $url_temp = preg_replace('/\w*api/', 'api', $url);
                 $data = $this->commonUtils->linuxApi([
                     'method' => $method,
-                    'url' => str_replace('/\w*api/', 'api', $url),
+                    'url' => $url_temp,
                     'params' => $data,
                 ]);
                 $url = 'https://music.163.com/api/linux/forward';
@@ -183,7 +187,7 @@ abstract class AbstractController
                 $client_opt['cookies'] = $jar::fromArray($header, '.music.163.com');
                 $data['header'] = $header;
                 $data = $this->commonUtils->eApi($options['url'], $data);
-                $url = str_replace('/\w*api/', 'eapi', $url);
+                $url = preg_replace('/\w*api/', 'eapi', $url);
             }
         }
 
@@ -222,11 +226,11 @@ abstract class AbstractController
                 if ($already_login) {//保留此次的参数
                     $expires_time = Carbon::now()->endOfDay()->timestamp;
                     $ip_cookie = new Cookie('p_ip', $ip, $expires_time);
-                    $ua_cookie = new Cookie('p_ua', $ua, $expires_time);
+                    $ua_cookie = new Cookie('p_' . $request_ua . '_ua', $ua, $expires_time);
                 } else {
                     $expires_time = Carbon::now()->timestamp;
                     $ip_cookie = new Cookie('p_ip', '', $expires_time);
-                    $ua_cookie = new Cookie('p_ua', '', $expires_time);
+                    $ua_cookie = new Cookie('p_' . $request_ua . '_ua', '', $expires_time);
                 }
                 $res = $res->withCookie($ip_cookie);
                 $res = $res->withCookie($ua_cookie);
@@ -239,8 +243,11 @@ abstract class AbstractController
             } else {
                 $answer['status'] = 400;
             }
-            $answer['body'] = json_decode($body, true) ?? $body;
-            return $res->json($answer['body'])->withStatus($answer['status']);
+            if (json_decode($body, true)) {
+                $answer['body'] = json_decode($body, true);
+                return $res->json($answer['body'])->withStatus($answer['status']);
+            }
+            return $res->raw($body)->withStatus($answer['status']);
         } catch (RequestException $e) {
             $this->logger->make()->error($e);
             return $this->response->json([

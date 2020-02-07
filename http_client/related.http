@@ -1,0 +1,5 @@
+# 相关歌单推荐
+GET http://{{host}}/related/playlist?id=1
+Accept: application/json
+
+###

@@ -18,3 +18,8 @@ GET http://{{host}}/tags/update?id=24381616&tags=学习
 Accept: application/json
 
 ###
+# 获取歌单详情
+GET http://{{host}}/playlist/detail?id=1
+Accept: application/json
+
+###

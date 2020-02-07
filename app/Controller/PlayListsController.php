@@ -172,4 +172,32 @@ class PlayListsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取歌单详情.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detail()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validated_data = $validator->validated();
+        $data['id'] = $validated_data['id'];
+        $data['n'] = 100000;
+        $data['s'] = $this->request->input('s', 8);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v3/playlist/detail',
+            $data,
+            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

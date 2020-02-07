@@ -135,8 +135,8 @@ class LoginController extends AbstractController
             preg_match('/GBinds\s*=\s*([^;]+);/', $body, $bindings);
             return $this->response->json([
                 'code' => 200,
-                'profile' => $profile[1],
-                'bindings' => $bindings[1],
+                'profile' => json_decode($profile[1], true),
+                'bindings' => json_decode($bindings[1], true),
             ]);
         } catch (\Exception $e) {
             return $this->response->json([
