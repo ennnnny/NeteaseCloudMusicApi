@@ -92,3 +92,8 @@ Router::addGroup('/top/', function () {
 Router::addGroup('/related/', function () {
     Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\RelatesController@playlist'); // 相关歌单推荐
 });
+
+Router::addGroup('/song/', function () {
+    Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\SongsController@getUrl'); // 获取音乐 url
+});
+Router::addRoute(['GET', 'POST'], '/check/music', 'App\Controller\SongsController@checkMusic'); //音乐是否可用

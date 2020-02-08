@@ -1,0 +1,10 @@
+# 获取音乐 url
+GET http://{{host}}/song/url?id=405998841,33894312
+Accept: application/json
+
+###
+# 音乐是否可用
+GET http://{{host}}/check/music?id=33894312
+Accept: application/json
+
+###
