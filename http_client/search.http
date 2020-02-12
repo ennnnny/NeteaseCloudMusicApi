@@ -1,0 +1,30 @@
+# 搜索
+GET http://{{host}}/search?keywords=五月天
+Accept: application/json
+
+###
+# 默认搜索关键词
+GET http://{{host}}/search/default
+Accept: application/json
+
+###
+# 热搜列表(简略)
+GET http://{{host}}/search/hot
+Accept: application/json
+
+###
+# 热搜列表(详细)
+GET http://{{host}}/search/hot/detail
+Accept: application/json
+
+###
+# 搜索建议
+GET http://{{host}}/search/suggest?keywords=五月&type=mobile
+Accept: application/json
+
+###
+# 搜索多重匹配
+GET http://{{host}}/search/multimatch?keywords=五月天
+Accept: application/json
+
+###

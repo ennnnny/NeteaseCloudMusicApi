@@ -8,3 +8,8 @@ GET http://{{host}}/top/playlist/highquality?before=1503639064232&limit=3
 Accept: application/json
 
 ###
+# 新歌速递
+GET http://{{host}}/top/song?type=0
+Accept: application/json
+
+###

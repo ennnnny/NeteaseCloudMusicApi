@@ -57,4 +57,23 @@ class TopsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 新歌速递.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getSong()
+    {
+        // 全部:0 华语:7 欧美:96 日本:8 韩国:16
+        $data['areaId'] = $this->request->input('type', 0);
+        $data['total'] = true;
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/discovery/new/songs',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

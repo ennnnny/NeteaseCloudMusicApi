@@ -8,3 +8,8 @@ GET http://{{host}}/playmode/intelligence/list?id=33894312&pid=24381616
 Accept: application/json
 
 ###
+# 获取歌词
+GET http://{{host}}/lyric?id=385965
+Accept: application/json
+
+###

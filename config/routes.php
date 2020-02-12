@@ -48,6 +48,11 @@ Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'catlist', 'App\Controller\PlayListsController@getCatList'); //歌单分类
     Router::addRoute(['GET', 'POST'], 'hot', 'App\Controller\PlayListsController@getHotList'); //热门歌单分类
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\PlayListsController@detail'); //获取歌单详情
+    Router::addRoute(['GET', 'POST'], 'create', 'App\Controller\PlayListsController@create'); //新建歌单
+    Router::addRoute(['GET', 'POST'], 'delete', 'App\Controller\PlayListsController@delete'); //删除歌单
+    Router::addRoute(['GET', 'POST'], 'subscribe', 'App\Controller\PlayListsController@subscribe'); //收藏/取消收藏歌单
+    Router::addRoute(['GET', 'POST'], 'subscribers', 'App\Controller\PlayListsController@subscribers'); //歌单收藏者
+    Router::addRoute(['GET', 'POST'], 'tracks', 'App\Controller\PlayListsController@tracks'); //对歌单添加或删除歌曲
 });
 
 Router::addGroup('/event', function () {
@@ -63,10 +68,12 @@ Router::addGroup('/share/', function () {
 Router::addGroup('/comment/', function () {
     Router::addRoute(['GET', 'POST'], 'event', 'App\Controller\CommentsController@event'); //获取动态评论
     Router::addRoute(['GET', 'POST'], 'hotwall/list', 'App\Controller\CommentsController@getHotwallList'); //云村热评
+    Router::addRoute(['GET', 'POST'], 'music', 'App\Controller\CommentsController@music'); //歌曲评论
 });
 
 Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题
 Router::addRoute(['GET', 'POST'], '/playmode/intelligence/list', 'App\Controller\OthersController@getIntelligenceList'); //智能播放
+Router::addRoute(['GET', 'POST'], '/lyric', 'App\Controller\OthersController@getLyric'); //获取歌词
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
@@ -87,6 +94,7 @@ Router::addGroup('/mv/', function () {
 Router::addGroup('/top/', function () {
     Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\TopsController@playlist'); //歌单 ( 网友精选碟 )
     Router::addRoute(['GET', 'POST'], 'playlist/highquality', 'App\Controller\TopsController@getHighQuality'); //获取精品歌单
+    Router::addRoute(['GET', 'POST'], 'song', 'App\Controller\TopsController@getSong'); //新歌速递
 });
 
 Router::addGroup('/related/', function () {
@@ -97,3 +105,12 @@ Router::addGroup('/song/', function () {
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\SongsController@getUrl'); // 获取音乐 url
 });
 Router::addRoute(['GET', 'POST'], '/check/music', 'App\Controller\SongsController@checkMusic'); //音乐是否可用
+
+Router::addGroup('/search', function () {
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\SearchController@index'); // 搜索
+    Router::addRoute(['GET', 'POST'], '/default', 'App\Controller\SearchController@getDefault'); //默认搜索关键词
+    Router::addRoute(['GET', 'POST'], '/hot', 'App\Controller\SearchController@getHot'); //热搜列表(简略)
+    Router::addRoute(['GET', 'POST'], '/hot/detail', 'App\Controller\SearchController@getHotDetail'); //热搜列表(简略)
+    Router::addRoute(['GET', 'POST'], '/suggest', 'App\Controller\SearchController@getSuggest'); //搜索建议
+    Router::addRoute(['GET', 'POST'], '/multimatch', 'App\Controller\SearchController@multimatch'); //搜索多重匹配
+});

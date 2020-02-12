@@ -200,4 +200,153 @@ class PlayListsController extends AbstractController
             ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 新建歌单.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function create()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'name' => 'required',
+            'privacy' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        $data['privacy'] = $data['privacy'] ?? 0;
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/create',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 删除歌单.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function delete()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['pid'] = $validator_data['id'];
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/delete',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 收藏/取消收藏歌单.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function subscribe()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            't' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['id'] = $validator_data['id'];
+        if ($validator_data['t'] == 1) {
+            $type = 'subscribe';
+        } else {
+            $type = 'unsubscribe';
+        }
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/' . $type,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 歌单收藏者.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function subscribers()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'limit' => '',
+            'offset' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        $data['limit'] = $data['limit'] ?? 20;
+        $data['offset'] = $data['offset'] ?? 0;
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/subscribers',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 对歌单添加或删除歌曲.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function tracks()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'pid' => 'required',
+            'op' => 'required',
+            'tracks' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        $data['trackIds'] = '[' . $data['tracks'] . ']';
+        unset($data['tracks']);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/playlist/manipulate/tracks',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

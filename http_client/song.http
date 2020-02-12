@@ -4,7 +4,7 @@ Accept: application/json
 
 ###
 # 音乐是否可用
-GET http://{{host}}/check/music?id=33894312
+GET http://{{host}}/check/music?id=385965
 Accept: application/json
 
 ###

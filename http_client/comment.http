@@ -8,3 +8,8 @@ GET http://{{host}}/comment/hotwall/list
 Accept: application/json
 
 ###
+# 歌曲评论
+GET http://{{host}}/comment/music?id=186016&limit=1
+Accept: application/json
+
+###

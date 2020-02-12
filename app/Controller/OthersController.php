@@ -63,4 +63,29 @@ class OthersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取歌词.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getLyric()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/song/lyric?lv=-1&kv=-1&tv=-1',
+            $data,
+            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

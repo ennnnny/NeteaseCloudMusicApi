@@ -23,3 +23,28 @@ GET http://{{host}}/playlist/detail?id=1
 Accept: application/json
 
 ###
+# 新建歌单
+GET http://{{host}}/playlist/create?name=测试歌单
+Accept: application/json
+
+###
+# 删除歌单
+GET http://{{host}}/playlist/delete?id=4859457068
+Accept: application/json
+
+###
+# 收藏/取消收藏歌单
+GET http://{{host}}/playlist/subscribe?id=106697785&t=2
+Accept: application/json
+
+###
+# 歌单收藏者
+GET http://{{host}}/playlist/subscribers?id=106697785&limit=30
+Accept: application/json
+
+###
+# 对歌单添加或删除歌曲
+GET http://{{host}}/playlist/tracks?op=add&pid=4859457068&tracks=385965
+Accept: application/json
+
+###
