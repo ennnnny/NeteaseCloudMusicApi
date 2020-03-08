@@ -88,4 +88,87 @@ class OthersController extends AbstractController
             ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * banner.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getBanner()
+    {
+        $type = $this->request->input('type', 0);
+        switch ($type) {
+            case 1:
+                $type = 'android';
+                break;
+            case 2:
+                $type = 'iphone';
+                break;
+            case 3:
+                $type = 'ipad';
+                break;
+            default:
+                $type = 'pc';
+        }
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v2/banner/get',
+            ['clientType' => $type],
+            ['crypto' => 'linuxapi']
+        );
+    }
+
+    /**
+     * 资源点赞( MV,电台,视频).
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function likeResource()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required_unless:type,6',
+            'type' => 'required',
+            't' => 'required',
+            'threadId' => 'required_if:type,6',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $query_data = $this->request->all();
+        $t = $query_data['t'] == 1 ? 'like' : 'unlike';
+        $type = '';
+        switch ($query_data['type']) {
+            case 1:
+                $type = 'R_MV_5_'; //MV
+                break;
+            case 4:
+                $type = 'A_DJ_1_'; //电台
+                break;
+            case 5:
+                $type = 'R_VI_62_'; //视频
+                break;
+            case 6:
+                $type = 'A_EV_2_'; //动态
+                break;
+        }
+        $data = [
+            'threadId' => $type . $query_data['id'],
+        ];
+        if ($type == 'A_EV_2_') {
+            $data['threadId'] = $query_data['threadId'];
+        }
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/resource/' . $t,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
 }

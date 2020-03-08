@@ -13,3 +13,13 @@ GET http://{{host}}/lyric?id=385965
 Accept: application/json
 
 ###
+# banner
+GET http://{{host}}/banner?type=2
+Accept: application/json
+
+###
+# 资源点赞( MV,电台,视频)
+GET http://{{host}}/resource/like?t=1&type=1&id=5436712
+Accept: application/json
+
+###

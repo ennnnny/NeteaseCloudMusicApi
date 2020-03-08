@@ -65,15 +65,25 @@ Router::addGroup('/share/', function () {
     Router::addRoute(['GET', 'POST'], 'resource', 'App\Controller\SharesController@resource'); //分享歌曲、歌单、mv、电台、电台节目到动态
 });
 
-Router::addGroup('/comment/', function () {
-    Router::addRoute(['GET', 'POST'], 'event', 'App\Controller\CommentsController@event'); //获取动态评论
-    Router::addRoute(['GET', 'POST'], 'hotwall/list', 'App\Controller\CommentsController@getHotwallList'); //云村热评
-    Router::addRoute(['GET', 'POST'], 'music', 'App\Controller\CommentsController@music'); //歌曲评论
+Router::addGroup('/comment', function () {
+    Router::addRoute(['GET', 'POST'], '/event', 'App\Controller\CommentsController@event'); //获取动态评论
+    Router::addRoute(['GET', 'POST'], '/hotwall/list', 'App\Controller\CommentsController@getHotwallList'); //云村热评
+    Router::addRoute(['GET', 'POST'], '/music', 'App\Controller\CommentsController@music'); //歌曲评论
+    Router::addRoute(['GET', 'POST'], '/album', 'App\Controller\CommentsController@album'); //专辑评论
+    Router::addRoute(['GET', 'POST'], '/playlist', 'App\Controller\CommentsController@playlist'); //歌单评论
+    Router::addRoute(['GET', 'POST'], '/mv', 'App\Controller\CommentsController@mv'); //mv 评论
+    Router::addRoute(['GET', 'POST'], '/dj', 'App\Controller\CommentsController@dj'); //电台节目评论
+    Router::addRoute(['GET', 'POST'], '/video', 'App\Controller\CommentsController@video'); //视频评论
+    Router::addRoute(['GET', 'POST'], '/hot', 'App\Controller\CommentsController@hot'); //热门评论
+    Router::addRoute(['GET', 'POST'], '/like', 'App\Controller\CommentsController@like'); //给评论点赞
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\CommentsController@operate'); //发送/删除评论
 });
 
 Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题
 Router::addRoute(['GET', 'POST'], '/playmode/intelligence/list', 'App\Controller\OthersController@getIntelligenceList'); //智能播放
 Router::addRoute(['GET', 'POST'], '/lyric', 'App\Controller\OthersController@getLyric'); //获取歌词
+Router::addRoute(['GET', 'POST'], '/banner', 'App\Controller\OthersController@getBanner'); //banner
+Router::addRoute(['GET', 'POST'], '/resource/like', 'App\Controller\OthersController@likeResource'); //资源点赞( MV,电台,视频)
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
