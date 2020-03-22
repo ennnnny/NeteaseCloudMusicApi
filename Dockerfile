@@ -15,7 +15,7 @@ LABEL maintainer="ennnnny <kuye1130@gmail.com>" version="1.0" license="MIT"
 ARG timezone
 
 ENV TIMEZONE=${timezone:-"Asia/Shanghai"} \
-    COMPOSER_VERSION=1.9.0 \
+    COMPOSER_VERSION=1.10.1 \
     APP_ENV=local
 #    APP_ENV=prod
 
@@ -63,5 +63,5 @@ VOLUME /opt/www
 
 EXPOSE 9501
 
-#ENTRYPOINT ["php", "/opt/www/bin/hyperf.php", "start"]
+ENTRYPOINT php /opt/www/bin/hyperf.php start
 CMD ["zsh"]

@@ -4,5 +4,7 @@
 # vendor/bin/phpstan analyse app --memory-limit 200M -l 0
 #
 parameters:
+  excludes_analyse:
+     - ./config/routes.php
   ignoreErrors:
 #    - '#Static call to instance method Hyperf\\DbConnection\\Db::[a-zA-Z0-9\\_]+\(\)#'

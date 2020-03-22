@@ -8,3 +8,8 @@ GET http://{{host}}/check/music?id=385965
 Accept: application/json
 
 ###
+# 获取歌曲详情
+GET http://{{host}}/song/detail?ids=347230,347231
+Accept: application/json
+
+###

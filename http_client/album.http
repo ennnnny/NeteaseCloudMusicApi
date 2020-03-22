@@ -1,0 +1,20 @@
+# 获取专辑内容
+GET http://{{host}}/album?id=32311
+Accept: application/json
+
+###
+# 专辑动态信息
+GET http://{{host}}/album/detail/dynamic?id=32311
+Accept: application/json
+
+###
+# 收藏/取消收藏专辑
+GET http://{{host}}/album/sub?id=32311&t=0
+Accept: application/json
+
+###
+# 获取已收藏专辑列表
+GET http://{{host}}/album/sublist
+Accept: application/json
+
+###

@@ -136,4 +136,120 @@ class ArtistsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取歌手单曲.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getInfo()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/artist/' . $validator_data['id'],
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取歌手 mv.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getMv()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'limit' => '',
+            'offset' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['artistId'] = $validator_data['id'];
+        $data['limit'] = $validator_data['limit'] ?? 30;
+        $data['offset'] = $validator_data['offset'] ?? 0;
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/artist/mvs',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取歌手专辑.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getAlbum()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'limit' => '',
+            'offset' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $id = $validator_data['id'];
+        $data['limit'] = $validator_data['limit'] ?? 30;
+        $data['offset'] = $validator_data['offset'] ?? 0;
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/artist/albums/' . $id,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取歌手描述.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getDesc()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/artist/introduction',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

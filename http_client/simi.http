@@ -1,0 +1,5 @@
+# 获取相似歌手
+GET http://{{host}}/simi/artist?id=6452
+Accept: application/json
+
+###

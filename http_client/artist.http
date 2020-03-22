@@ -18,3 +18,23 @@ GET http://{{host}}/artist/sublist
 Accept: application/json
 
 ###
+# 获取歌手单曲
+GET http://{{host}}/artists?id=6452
+Accept: application/json
+
+###
+# 获取歌手 mv
+GET http://{{host}}/artist/mv?id=6452
+Accept: application/json
+
+###
+# 获取歌手专辑
+GET http://{{host}}/artist/album?id=6452&limit=30
+Accept: application/json
+
+###
+# 获取歌手描述
+GET http://{{host}}/artist/desc?id=6452
+Accept: application/json
+
+###

@@ -12,19 +12,18 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class SongsController extends AbstractController
+class AlbumsController extends AbstractController
 {
     /**
-     * 获取音乐 url.
+     * 获取专辑内容.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getUrl()
+    public function getInfo()
     {
         $validator = $this->validationFactory->make($this->request->all(), [
             'id' => 'required',
-            'br' => '',
         ]);
         if ($validator->fails()) {
             // Handle exception
@@ -33,86 +32,24 @@ class SongsController extends AbstractController
         }
         $validated_data = $validator->validated();
 
-        $cookie = $this->request->getCookieParams();
-        if (! isset($cookie['MUSIC_U'])) {
-            $cookie['_ntes_nuid'] = bin2hex($this->commonUtils->randString(16));
-        }
-        $cookie['os'] = 'pc';
-
-        $data['ids'] = '[' . $validated_data['id'] . ']';
-        $data['br'] = (int) ($validated_data['br'] ?? 999000);
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/api/song/enhance/player/url',
-            $data,
-            ['crypto' => 'linuxapi', 'cookie' => $cookie]
-        );
-    }
-
-    /**
-     * 音乐是否可用.
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function checkMusic()
-    {
-        $validator = $this->validationFactory->make($this->request->all(), [
-            'id' => 'required',
-            'br' => '',
-        ]);
-        if ($validator->fails()) {
-            // Handle exception
-            $errorMessage = $validator->errors()->first();
-            return $this->returnMsg(422, $errorMessage);
-        }
-        $validated_data = $validator->validated();
-
-        $data['ids'] = '[' . (int) $validated_data['id'] . ']';
-        $data['br'] = (int) ($validated_data['br'] ?? 999000);
-        $res = $this->createCloudRequest(
-            'POST',
-            'https://music.163.com/weapi/song/enhance/player/url',
-            $data,
+            'https://music.163.com/weapi/v1/album/' . $validated_data['id'],
+            [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
-        try {
-            $playable = false;
-            $body = $res->getBody()->getContents();
-            $body = json_decode($body, true);
-            if ($res->getStatusCode() == 200) {
-                if ($body['data'][0]['code'] == 200) {
-                    $playable = true;
-                }
-            }
-            if ($playable) {
-                return $this->response->json([
-                    'success' => true,
-                    'message' => 'ok',
-                ])->withStatus(200);
-            }
-            return $this->response->json([
-                'success' => false,
-                'message' => '亲爱的,暂无版权',
-            ])->withStatus(404);
-        } catch (\Exception $e) {
-            return $this->response->json([
-                'code' => 500,
-                'msg' => $e,
-            ])->withStatus(500);
-        }
     }
 
     /**
-     * 获取歌曲详情.
+     * 专辑动态信息.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getDetail()
+    public function getDynamicDetail()
     {
         $validator = $this->validationFactory->make($this->request->all(), [
-            'ids' => 'required',
+            'id' => 'required',
         ]);
         if ($validator->fails()) {
             // Handle exception
@@ -121,18 +58,62 @@ class SongsController extends AbstractController
         }
         $validated_data = $validator->validated();
 
-        $ids = explode(',', $validated_data['ids']);
-        $temp_lists = [];
-        foreach ($ids as $id) {
-            $temp_lists[] = '{"id":' . $id . '}';
-        }
-        $data = [
-            'c' => '[' . implode(',', $temp_lists) . ']',
-            'ids' => '[' . $validated_data['ids'] . ']',
-        ];
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v3/song/detail',
+            'https://music.163.com/api/album/detail/dynamic',
+            $validated_data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 收藏/取消收藏专辑.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function sub()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            't' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validated_data = $validator->validated();
+        $validated_data['t'] = $validated_data['t'] ?? 0;
+        if ($validated_data['t'] == 1) {
+            $t = 'sub';
+        } else {
+            $t = 'unsub';
+        }
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/album/' . $t,
+            ['id' => $validated_data['id']],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取已收藏专辑列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getSubList()
+    {
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['limit'] = $this->request->input('limit', 25);
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/album/sublist',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

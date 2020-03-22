@@ -90,7 +90,11 @@ Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\ArtistsController@sub'); //收藏/取消收藏歌手
     Router::addRoute(['GET', 'POST'], 'top/song', 'App\Controller\ArtistsController@getTopSong'); //歌手热门50首歌曲
     Router::addRoute(['GET', 'POST'], 'sublist', 'App\Controller\ArtistsController@getSublist'); //收藏的歌手列表
+    Router::addRoute(['GET', 'POST'], 'mv', 'App\Controller\ArtistsController@getMv'); //获取歌手 mv
+    Router::addRoute(['GET', 'POST'], 'album', 'App\Controller\ArtistsController@getAlbum'); //获取歌手专辑
+    Router::addRoute(['GET', 'POST'], 'desc', 'App\Controller\ArtistsController@getDesc'); //获取歌手描述
 });
+Router::addRoute(['GET', 'POST'], '/artists', 'App\Controller\ArtistsController@getInfo'); //获取歌手单曲
 
 Router::addGroup('/video/', function () {
     Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\VideosController@sub'); //收藏/取消收藏视频
@@ -113,8 +117,20 @@ Router::addGroup('/related/', function () {
 
 Router::addGroup('/song/', function () {
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\SongsController@getUrl'); // 获取音乐 url
+    Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\SongsController@getDetail'); //获取歌曲详情
 });
 Router::addRoute(['GET', 'POST'], '/check/music', 'App\Controller\SongsController@checkMusic'); //音乐是否可用
+
+Router::addGroup('/album', function () {
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\AlbumsController@getInfo'); //获取专辑内容
+    Router::addRoute(['GET', 'POST'], '/detail/dynamic', 'App\Controller\AlbumsController@getDynamicDetail'); //专辑动态信息
+    Router::addRoute(['GET', 'POST'], '/sub', 'App\Controller\AlbumsController@sub'); //收藏/取消收藏专辑
+    Router::addRoute(['GET', 'POST'], '/sublist', 'App\Controller\AlbumsController@getSubList'); //获取已收藏专辑列表
+});
+
+Router::addGroup('/simi/', function () {
+    Router::addRoute(['GET', 'POST'], 'artist', 'App\Controller\SimiController@getArtist'); //获取相似歌手
+});
 
 Router::addGroup('/search', function () {
     Router::addRoute(['GET', 'POST'], '', 'App\Controller\SearchController@index'); // 搜索
