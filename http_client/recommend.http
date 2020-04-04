@@ -1,0 +1,10 @@
+# 获取每日推荐歌单
+GET http://{{host}}/recommend/resource
+Accept: application/json
+
+###
+# 获取每日推荐歌曲
+GET http://{{host}}/recommend/songs
+Accept: application/json
+
+###

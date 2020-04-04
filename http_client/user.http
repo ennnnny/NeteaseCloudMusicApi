@@ -49,3 +49,28 @@ GET http://{{host}}/user/record?uid={{uid}}&type=1
 Accept: application/json
 
 ###
+# 私人 FM
+GET http://{{host}}/personal_fm
+Accept: application/json
+
+###
+# 签到
+GET http://{{host}}/daily_signin
+Accept: application/json
+
+###
+# 喜欢音乐
+GET http://{{host}}/like?id=347230
+Accept: application/json
+
+###
+# 喜欢音乐列表
+GET http://{{host}}/likelist?uid=32953014
+Accept: application/json
+
+###
+# 垃圾桶
+GET http://{{host}}}/fm_trash?id=347230
+Accept: application/json
+
+###

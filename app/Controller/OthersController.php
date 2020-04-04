@@ -72,6 +72,9 @@ class OthersController extends AbstractController
      */
     public function getLyric()
     {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
         $validator = $this->validationFactory->make($this->request->all(), [
             'id' => 'required',
         ]);
@@ -81,11 +84,14 @@ class OthersController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $data = $validator->validated();
+        $data['lv'] = -1;
+        $data['kv'] = -1;
+        $data['tv'] = -1;
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/song/lyric?lv=-1&kv=-1&tv=-1',
+            'https://music.163.com/api/song/lyric',
             $data,
-            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'linuxapi', 'cookie' => $cookie]
         );
     }
 
@@ -169,6 +175,47 @@ class OthersController extends AbstractController
             'https://music.163.com/weapi/resource/' . $t,
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 听歌打卡
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function scrobble()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'sourceid' => 'required',
+            'time' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validated_data = $validator->validated();
+        $log = [
+            'action' => 'play',
+            'json' => [
+                'download' => 0,
+                'end' => 'playend',
+                'id' => $validated_data['id'],
+                'sourceId' => $validated_data['sourceid'],
+                'time' => $validated_data['time'],
+                'type' => 'song',
+                'wifi' => 0,
+            ],
+        ];
+        $data = ['logs' => '[' . json_encode($log) . ']'];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/feedback/weblog',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 }

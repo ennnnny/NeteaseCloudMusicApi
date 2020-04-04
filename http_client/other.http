@@ -23,3 +23,8 @@ GET http://{{host}}/resource/like?t=1&type=1&id=5436712
 Accept: application/json
 
 ###
+# 听歌打卡
+GET http://{{host}}/scrobble?id=518066366&sourceid=36780169&time=291
+Accept: application/json
+
+###

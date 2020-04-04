@@ -13,3 +13,13 @@ GET http://{{host}}/top/song?type=0
 Accept: application/json
 
 ###
+# 新碟上架
+GET http://{{host}}/top/album?offset=0&limit=30
+Accept: application/json
+
+###
+# 热门歌手
+GET http://{{host}}/top/artists?offset=0&limit=30
+Accept: application/json
+
+###

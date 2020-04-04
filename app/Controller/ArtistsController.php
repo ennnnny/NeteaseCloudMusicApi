@@ -54,7 +54,7 @@ class ArtistsController extends AbstractController
         $data['total'] = true;
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/artist/list',
+            'https://music.163.com/api/v1/artist/list',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

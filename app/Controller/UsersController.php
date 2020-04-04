@@ -304,4 +304,131 @@ class UsersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 私人 FM.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getPersonalFm()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/radio/get',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 签到.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function dailySignin()
+    {
+        $data['type'] = $this->request->input('type', 0);
+        /*
+         * 0为安卓端签到 3点经验, 1为网页签到,2点经验
+         * 签到成功 {'android': {'point': 3, 'code': 200}, 'web': {'point': 2, 'code': 200}}
+         * 重复签到 {'android': {'code': -2, 'msg': '重复签到'}, 'web': {'code': -2, 'msg': '重复签到'}}
+         * 未登录 {'android': {'code': 301}, 'web': {'code': 301}}
+         */
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/point/dailyTask',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 喜欢音乐.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function likeSong()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'like' => '',
+            'alg' => '',
+            'time' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $alg = $validator_data['alg'] ?? 'itembased';
+        $time = $validator_data['time'] ?? 25;
+        $data['trackId'] = $validator_data['id'];
+        $data['like'] = $validator_data['like'] == 'false' ? false : true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/radio/like?alg=' . $alg . '&trackId=' . $validator_data['id'] . '&time=' . $time,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 喜欢音乐列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function likeList()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'uid' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/song/like/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 垃圾桶.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function fmTrash()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'time' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $time = $validator_data['time'] ?? 25;
+        $data['songId'] = $validator_data['id'];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/radio/trash/add?alg=RT&songId=' . $validator_data['id'] . '&time=' . $time,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

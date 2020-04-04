@@ -18,3 +18,8 @@ GET http://{{host}}/album/sublist
 Accept: application/json
 
 ###
+# 最新专辑
+GET http://{{host}}/album/newest
+Accept: application/json
+
+###

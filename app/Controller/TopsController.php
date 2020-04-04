@@ -76,4 +76,45 @@ class TopsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 新碟上架.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function album()
+    {
+        $data['area'] = $this->request->input('type', 'ALL'); // ALL,ZH,EA,KR,JP
+        $data['limit'] = $this->request->input('limit', 50);
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/album/new',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 热门歌手.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getArtists()
+    {
+        $data['limit'] = $this->request->input('limit', 50);
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/artist/top',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

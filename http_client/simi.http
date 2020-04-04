@@ -3,3 +3,23 @@ GET http://{{host}}/simi/artist?id=6452
 Accept: application/json
 
 ###
+# 获取相似歌单
+GET http://{{host}}/simi/playlist?id=347230
+Accept: application/json
+
+###
+# 相似 mv
+GET http://{{host}}/simi/mv?mvid=5436712
+Accept: application/json
+
+###
+# 获取相似音乐
+GET http://{{host}}/simi/song?id=347230
+Accept: application/json
+
+###
+# 获取最近 5 个听了这首歌的用户
+GET http://{{host}}/simi/user?id=347230
+Accept: application/json
+
+###
