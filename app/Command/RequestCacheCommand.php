@@ -46,9 +46,6 @@ class RequestCacheCommand extends HyperfCommand
     {
         $this->info('开始拉取UserAgent！');
         $base_url = 'https://developers.whatismybrowser.com/useragents/explore/operating_system_name/';
-        $ql = QueryList::getInstance()->rules([
-            'text' => ['.useragent > a', 'text'],
-        ]);
         $types = [
             'android',
             'ios',
@@ -57,20 +54,18 @@ class RequestCacheCommand extends HyperfCommand
         ];
         foreach ($types as $type) {
             $this->warn('执行拉取' . $type . '中。。。。。。');
-            $temp = $ql->get($base_url . $type)->query()->getData();
+            $temp = QueryList::getInstance()->get($base_url . $type)->find('.useragent > a')->texts()->all();
             if (count($temp) > 0) {
                 $content = '';
                 foreach ($temp as $item) {
-                    $content .= $item['text'] . PHP_EOL;
+                    $content .= $item . PHP_EOL;
                 }
                 file_put_contents(BASE_PATH . '/request_cache/' . $type . '.txt', $content);
             }
-            // 释放资源，销毁内存占用
-            $ql->destruct();
         }
         $this->info('拉取UserAgent执行结束！');
 
-        $this->info('开始拉取中国Ip！');
+        $this->info('开始拉取中国IP！');
         $clientFactory = $this->container->get(ClientFactory::class);
         $client = $clientFactory->create([
             'timeout' => 5.0,

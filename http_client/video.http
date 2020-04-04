@@ -3,23 +3,3 @@ GET http://{{host}}/video/sub?id=123&t=1
 Accept: application/json
 
 ###
-# 收藏/取消收藏 MV
-GET http://{{host}}/mv/sub?mvid=123&t=1
-Accept: application/json
-
-###
-# 收藏的 MV 列表
-GET http://{{host}}/mv/sublist
-Accept: application/json
-
-###
-# 歌单分类
-GET http://{{host}}/playlist/catlist
-Accept: application/json
-
-###
-# 热门歌单分类
-GET http://{{host}}/playlist/hot
-Accept: application/json
-
-###

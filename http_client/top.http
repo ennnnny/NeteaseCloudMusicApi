@@ -23,3 +23,8 @@ GET http://{{host}}/top/artists?offset=0&limit=30
 Accept: application/json
 
 ###
+# mv 排行
+GET http://{{host}}/top/mv?limit=10
+Accept: application/json
+
+###

@@ -117,4 +117,24 @@ class TopsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * mv 排行.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function mv()
+    {
+        $data['area'] = $this->request->input('area', '');
+        $data['limit'] = $this->request->input('limit', 30);
+        $data['offset'] = $this->request->input('offset', 0);
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/mv/toplist',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

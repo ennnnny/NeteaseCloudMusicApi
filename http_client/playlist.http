@@ -48,3 +48,8 @@ GET http://{{host}}/playlist/tracks?op=add&pid=4859457068&tracks=385965
 Accept: application/json
 
 ###
+# 歌单分类
+GET http://{{host}}/playlist/catlist
+Accept: application/json
+
+###

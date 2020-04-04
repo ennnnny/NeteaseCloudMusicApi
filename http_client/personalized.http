@@ -1,0 +1,25 @@
+# 推荐 mv
+GET http://{{host}}/personalized/mv
+Accept: application/json
+
+###
+# 推荐歌单
+GET http://{{host}}/personalized?limit=1
+Accept: application/json
+
+###
+# 推荐新音乐
+GET http://{{host}}}/personalized/newsong
+Accept: application/json
+
+###
+# 推荐电台
+GET http://{{host}}/personalized/djprogram
+Accept: application/json
+
+###
+# 推荐节目
+GET http://{{host}}/program/recommend
+Accept: application/json
+
+###

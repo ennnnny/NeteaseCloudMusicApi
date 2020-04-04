@@ -109,6 +109,9 @@ Router::addGroup('/video/', function () {
 Router::addGroup('/mv/', function () {
     Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\MvController@sub'); //收藏/取消收藏 MV
     Router::addRoute(['GET', 'POST'], 'sublist', 'App\Controller\MvController@getSubList'); //收藏的 MV 列表
+    Router::addRoute(['GET', 'POST'], 'all', 'App\Controller\MvController@all'); //全部 mv
+    Router::addRoute(['GET', 'POST'], 'first', 'App\Controller\MvController@first'); //最新 mv
+    Router::addRoute(['GET', 'POST'], 'exclusive/rcmd', 'App\Controller\MvController@exclusive'); //网易出品mv
 });
 
 Router::addGroup('/top/', function () {
@@ -117,6 +120,7 @@ Router::addGroup('/top/', function () {
     Router::addRoute(['GET', 'POST'], 'song', 'App\Controller\TopsController@getSong'); //新歌速递
     Router::addRoute(['GET', 'POST'], 'album', 'App\Controller\TopsController@album'); //新碟上架
     Router::addRoute(['GET', 'POST'], 'artists', 'App\Controller\TopsController@getArtists'); //热门歌手
+    Router::addRoute(['GET', 'POST'], 'mv', 'App\Controller\TopsController@mv'); //mv 排行
 });
 
 Router::addGroup('/related/', function () {
@@ -158,3 +162,12 @@ Router::addGroup('/recommend/', function () {
     Router::addRoute(['GET', 'POST'], 'resource', 'App\Controller\RecommendsController@getResource'); //获取每日推荐歌单
     Router::addRoute(['GET', 'POST'], 'songs', 'App\Controller\RecommendsController@getSongs'); //获取每日推荐歌曲
 });
+
+Router::addGroup('/personalized', function () {
+    Router::addRoute(['GET', 'POST'], '/mv', 'App\Controller\PersonalizedController@mv'); //推荐 mv
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\PersonalizedController@index'); //推荐歌单
+    Router::addRoute(['GET', 'POST'], '/newsong', 'App\Controller\PersonalizedController@newsong'); //推荐新音乐
+    Router::addRoute(['GET', 'POST'], '/djprogram', 'App\Controller\PersonalizedController@djprogram'); //推荐电台
+    Router::addRoute(['GET', 'POST'], '/privatecontent', 'App\Controller\PersonalizedController@privatecontent'); //独家放送
+});
+Router::addRoute(['GET', 'POST'], '/program/recommend', 'App\Controller\PersonalizedController@program'); //推荐节目

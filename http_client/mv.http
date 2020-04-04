@@ -1,0 +1,30 @@
+# 收藏/取消收藏 MV
+GET http://{{host}}/mv/sub?mvid=123&t=1
+Accept: application/json
+
+###
+# 收藏的 MV 列表
+GET http://{{host}}/mv/sublist
+Accept: application/json
+
+###
+# 热门歌单分类
+GET http://{{host}}/playlist/hot
+Accept: application/json
+
+###
+# 全部 mv
+GET http://{{host}}/mv/all?area=港台
+Accept: application/json
+
+###
+# 最新 mv
+GET http://{{host}}/mv/first?limit=10
+Accept: application/json
+
+###
+# 网易出品mv
+GET http://{{host}}/mv/exclusive/rcmd?limit=10
+Accept: application/json
+
+###
