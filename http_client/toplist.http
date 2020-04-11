@@ -1,0 +1,15 @@
+# 所有榜单
+GET http://{{host}}/toplist
+Accept: application/json
+
+###
+# 所有榜单内容摘要
+GET http://{{host}}/toplist/detail
+Accept: application/json
+
+###
+# 歌手榜
+GET http://{{host}}/toplist/artist
+Accept: application/json
+
+###

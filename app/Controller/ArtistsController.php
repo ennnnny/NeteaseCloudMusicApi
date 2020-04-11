@@ -9,40 +9,33 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
-
 namespace App\Controller;
 
 class ArtistsController extends AbstractController
 {
     /**
-     * 歌手分类
-     * categoryCode 取值
-     * 入驻歌手 5001
-     * 华语男歌手 1001
-     * 华语女歌手 1002
-     * 华语组合/乐队 1003
-     * 欧美男歌手 2001
-     * 欧美女歌手 2002
-     * 欧美组合/乐队 2003
-     * 日本男歌手 6001
-     * 日本女歌手 6002
-     * 日本组合/乐队 6003
-     * 韩国男歌手 7001
-     * 韩国女歌手 7002
-     * 韩国组合/乐队 7003
-     * 其他男歌手 4001
-     * 其他女歌手 4002
-     * 其他组合/乐队 4003.
+     * type 取值
+     * 1:男歌手
+     * 2:女歌手
+     * 3:乐队
+     *
+     * area 取值
+     * -1:全部
+     * 7华语
+     * 96欧美
+     * 8:日本
+     * 16韩国
+     * 0:其他
      *
      * initial 取值 a-z/A-Z
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getList()
     {
-        $data['categoryCode'] = $this->request->input('cat', '1001');
+//        $data['categoryCode'] = $this->request->input('cat', '1001');
         $initial = $this->request->input('initial', '');
         if (empty($initial) || ! preg_match('/^[a-zA-Z]$/', $initial)) {
             $data['initial'] = 0;
@@ -52,6 +45,8 @@ class ArtistsController extends AbstractController
         $data['offset'] = $this->request->input('offset', 0);
         $data['limit'] = $this->request->input('limit', 30);
         $data['total'] = true;
+        $data['type'] = $this->request->input('type', '1');
+        $data['area'] = $this->request->input('area');
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/api/v1/artist/list',

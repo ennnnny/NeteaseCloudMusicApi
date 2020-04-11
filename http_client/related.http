@@ -3,3 +3,8 @@ GET http://{{host}}/related/playlist?id=1
 Accept: application/json
 
 ###
+# 相关视频
+GET http://{{host}}/related/allvideo?id=89ADDE33C0AAE8EC14B99F6750DB954D
+Accept: application/json
+
+###

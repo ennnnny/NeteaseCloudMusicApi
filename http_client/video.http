@@ -3,3 +3,18 @@ GET http://{{host}}/video/sub?id=123&t=1
 Accept: application/json
 
 ###
+# 获取视频标签列表
+GET http://{{host}}/video/group/list
+Accept: application/json
+
+###
+# 视频详情
+GET http://{{host}}/video/detail?id=89ADDE33C0AAE8EC14B99F6750DB954D
+Accept: application/json
+
+###
+# 获取视频播放地址
+GET http://{{host}}/video/url?id=89ADDE33C0AAE8EC14B99F6750DB954D
+Accept: application/json
+
+###

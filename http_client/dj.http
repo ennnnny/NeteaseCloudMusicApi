@@ -1,0 +1,10 @@
+# 电台banner
+GET http://{{host}}/dj/banner
+Accept: application/json
+
+###
+# 热门电台
+GET http://{{host}}/dj/hot
+Accept: application/json
+
+###

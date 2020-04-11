@@ -11,36 +11,41 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-class RecommendsController extends AbstractController
+class DjController extends AbstractController
 {
     /**
-     * 获取每日推荐歌单.
+     * 电台banner.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getResource()
+    public function banner()
     {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v1/discovery/recommend/resource',
+            'http://music.163.com/weapi/djradio/banner/get',
             [],
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $cookie]
         );
     }
 
     /**
-     * 获取每日推荐歌曲.
+     * 热门电台.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getSongs()
+    public function hot()
     {
-        $data['total'] = true;
+        $data['limit'] = $this->request->input('limit', 30);
+        $data['offset'] = $this->request->input('offset', 0);
+
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v1/discovery/recommend/songs',
+            'https://music.163.com/weapi/djradio/hot/v1',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
-
 namespace App\Controller;
 
 class VideosController extends AbstractController
@@ -41,6 +40,77 @@ class VideosController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             $url,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取视频标签列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function groupList()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/cloudvideo/group/list',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 视频详情.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detail()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/cloudvideo/v1/video/detail',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取视频播放地址
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function url()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'res' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['ids'] = '["' . $validator_data['id'] . '"]';
+        $data['resolution'] = $validator_data['res'] ?? 1080;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/cloudvideo/playurl',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

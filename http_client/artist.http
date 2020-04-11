@@ -1,5 +1,5 @@
 # 歌手分类
-GET http://{{host}}/artist/list
+GET http://{{host}}/artist/list?type=1&area=96&initial=b
 Accept: application/json
 
 ###

@@ -28,3 +28,8 @@ GET http://{{host}}/top/mv?limit=10
 Accept: application/json
 
 ###
+# 排行榜
+GET http://{{host}}/top/list?idx=6
+Accept: application/json
+
+###

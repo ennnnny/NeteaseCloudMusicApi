@@ -74,3 +74,23 @@ GET http://{{host}}}/fm_trash?id=347230
 Accept: application/json
 
 ###
+# 云盘
+GET http://{{host}}/user/cloud
+Accept: application/json
+
+###
+# 云盘歌曲删除
+GET http://{{host}}/user/cloud/del
+Accept: application/json
+
+###
+# 云盘数据详情
+GET http://{{host}}/user/cloud/detail?id=5374627
+Accept: application/json
+
+###
+# 用户电台
+GET http://{{host}}/user/audio?uid=32953014
+Accept: application/json
+
+###

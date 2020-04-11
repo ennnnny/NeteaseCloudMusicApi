@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
-
 namespace App\Controller;
 
 class UsersController extends AbstractController
@@ -427,6 +426,100 @@ class UsersController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/radio/trash/add?alg=RT&songId=' . $validator_data['id'] . '&time=' . $time,
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 云盘.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function cloud()
+    {
+        $data['limit'] = $this->request->input('limit', 30);
+        $data['offset'] = $this->request->input('offset', 0);
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/cloud/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    public function cloudDel()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['songIds'] = [$validator_data['id']];
+
+        return $this->createCloudRequest(
+            'POST',
+            'http://music.163.com/weapi/cloud/del',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 云盘数据详情.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function cloudDetail()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['songIds'] = explode(',', trim($validator_data['id']));
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/v1/cloud/get/byids',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 用户电台.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function audio()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['userId'] = $validator_data['uid'];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/djradio/get/byuser',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

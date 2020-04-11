@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
-
 namespace App\Controller;
 
 class MvController extends AbstractController
@@ -126,6 +125,63 @@ class MvController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://interface.music.163.com/api/mv/exclusive/rcmd',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取 mv 数据.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detail()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'mvid' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+        $data['id'] = $validator_data['mvid'];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/mv/detail',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * mv 地址
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function url()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'res' => '',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+
+        $data['id'] = $validator_data['id'];
+        $data['r'] = $validator_data['res'] ?? 1080;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/song/enhance/play/mv/url',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

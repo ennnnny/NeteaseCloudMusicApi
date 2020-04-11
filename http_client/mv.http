@@ -28,3 +28,13 @@ GET http://{{host}}/mv/exclusive/rcmd?limit=10
 Accept: application/json
 
 ###
+# 获取 mv 数据
+GET http://{{host}}/mv/detail?mvid=5436712
+Accept: application/json
+
+###
+# mv 地址
+GET http://{{host}}/mv/url?id=5436712
+Accept: application/json
+
+###

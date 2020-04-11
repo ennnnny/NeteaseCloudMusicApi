@@ -11,36 +11,56 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-class RecommendsController extends AbstractController
+class ToplistsController extends AbstractController
 {
     /**
-     * 获取每日推荐歌单.
+     * 所有榜单.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getResource()
+    public function index()
     {
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v1/discovery/recommend/resource',
+            'https://music.163.com/weapi/toplist',
+            [],
+            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 所有榜单内容摘要
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detail()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/toplist/detail',
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
     /**
-     * 获取每日推荐歌曲.
+     * 歌手榜.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getSongs()
+    public function artist()
     {
+        $data['type'] = 1;
+        $data['limit'] = 100;
+        $data['offset'] = 0;
         $data['total'] = true;
+
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v1/discovery/recommend/songs',
+            'https://music.163.com/weapi/toplist/artist',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

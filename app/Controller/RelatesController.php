@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
-
 namespace App\Controller;
 
 class RelatesController extends AbstractController
@@ -20,7 +19,7 @@ class RelatesController extends AbstractController
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function playlist()
+    public function playList()
     {
         $validator = $this->validationFactory->make($this->request->all(), [
             'id' => 'required',
@@ -64,5 +63,35 @@ class RelatesController extends AbstractController
                 'msg' => $e,
             ])->withStatus(500);
         }
+    }
+
+    /**
+     * 相关视频.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function allVideo()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+        if (is_numeric($data['id'])) {
+            $data['type'] = 0;
+        } else {
+            $data['type'] = 1;
+        }
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/cloudvideo/v1/allvideo/rcmd',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
     }
 }

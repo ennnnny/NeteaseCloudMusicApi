@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @contact  group@hyperf.io
  * @license  https://github.com/hyperf-cloud/hyperf/blob/master/LICENSE
  */
-
 use Hyperf\HttpServer\Router\Router;
 
 Router::addRoute(['GET', 'POST', 'HEAD'], '/', 'App\Controller\IndexController@index');
@@ -37,6 +36,10 @@ Router::addGroup('/user/', function () {
     Router::addRoute(['GET', 'POST'], 'followeds', 'App\Controller\UsersController@getFolloweds'); //获取用户粉丝列表
     Router::addRoute(['GET', 'POST'], 'event', 'App\Controller\UsersController@getEvent'); //获取用户动态
     Router::addRoute(['GET', 'POST'], 'record', 'App\Controller\UsersController@getRecord'); //获取用户播放记录
+    Router::addRoute(['GET', 'POST'], 'cloud', 'App\Controller\UsersController@cloud'); //云盘
+    Router::addRoute(['GET', 'POST'], 'cloud/del', 'App\Controller\UsersController@cloudDel'); //云盘歌曲删除
+    Router::addRoute(['GET', 'POST'], 'cloud/detail', 'App\Controller\UsersController@cloudDetail'); //云盘数据详情
+    Router::addRoute(['GET', 'POST'], 'audio', 'App\Controller\UsersController@audio'); //用户电台
 });
 Router::addRoute(['GET', 'POST'], '/follow', 'App\Controller\UsersController@follow'); //关注/取消关注用户
 Router::addRoute(['GET', 'POST'], '/personal_fm', 'App\Controller\UsersController@getPersonalFm'); //私人 FM
@@ -104,6 +107,9 @@ Router::addRoute(['GET', 'POST'], '/artists', 'App\Controller\ArtistsController@
 
 Router::addGroup('/video/', function () {
     Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\VideosController@sub'); //收藏/取消收藏视频
+    Router::addRoute(['GET', 'POST'], 'group/list', 'App\Controller\VideosController@groupList'); //获取视频标签列表
+    Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\VideosController@detail'); //视频详情
+    Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\VideosController@url'); //获取视频播放地址
 });
 
 Router::addGroup('/mv/', function () {
@@ -112,6 +118,8 @@ Router::addGroup('/mv/', function () {
     Router::addRoute(['GET', 'POST'], 'all', 'App\Controller\MvController@all'); //全部 mv
     Router::addRoute(['GET', 'POST'], 'first', 'App\Controller\MvController@first'); //最新 mv
     Router::addRoute(['GET', 'POST'], 'exclusive/rcmd', 'App\Controller\MvController@exclusive'); //网易出品mv
+    Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\MvController@detail'); //获取 mv 数据
+    Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\MvController@url'); //mv 地址
 });
 
 Router::addGroup('/top/', function () {
@@ -121,10 +129,18 @@ Router::addGroup('/top/', function () {
     Router::addRoute(['GET', 'POST'], 'album', 'App\Controller\TopsController@album'); //新碟上架
     Router::addRoute(['GET', 'POST'], 'artists', 'App\Controller\TopsController@getArtists'); //热门歌手
     Router::addRoute(['GET', 'POST'], 'mv', 'App\Controller\TopsController@mv'); //mv 排行
+    Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\TopsController@list'); //排行榜
+});
+
+Router::addGroup('/toplist', function () {
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\ToplistsController@index'); //所有榜单
+    Router::addRoute(['GET', 'POST'], '/detail', 'App\Controller\ToplistsController@detail'); //所有榜单内容摘要
+    Router::addRoute(['GET', 'POST'], '/artist', 'App\Controller\ToplistsController@artist'); //歌手榜
 });
 
 Router::addGroup('/related/', function () {
-    Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\RelatesController@playlist'); // 相关歌单推荐
+    Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\RelatesController@playList'); // 相关歌单推荐
+    Router::addRoute(['GET', 'POST'], 'allvideo', 'App\Controller\RelatesController@allVideo'); //相关视频
 });
 
 Router::addGroup('/song/', function () {
@@ -171,3 +187,8 @@ Router::addGroup('/personalized', function () {
     Router::addRoute(['GET', 'POST'], '/privatecontent', 'App\Controller\PersonalizedController@privatecontent'); //独家放送
 });
 Router::addRoute(['GET', 'POST'], '/program/recommend', 'App\Controller\PersonalizedController@program'); //推荐节目
+
+Router::addGroup('/dj/', function () {
+    Router::addRoute(['GET', 'POST'], 'banner', 'App\Controller\DjController@banner'); //电台banner
+    Router::addRoute(['GET', 'POST'], 'hot', 'App\Controller\DjController@hot'); //热门电台
+});
