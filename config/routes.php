@@ -191,4 +191,36 @@ Router::addRoute(['GET', 'POST'], '/program/recommend', 'App\Controller\Personal
 Router::addGroup('/dj/', function () {
     Router::addRoute(['GET', 'POST'], 'banner', 'App\Controller\DjController@banner'); //电台banner
     Router::addRoute(['GET', 'POST'], 'hot', 'App\Controller\DjController@hot'); //热门电台
+    Router::addRoute(['GET', 'POST'], 'program/toplist', 'App\Controller\DjController@programTopList'); //电台 - 节目榜
+    Router::addRoute(['GET', 'POST'], 'toplist/pay', 'App\Controller\DjController@topListPay'); //电台 - 付费精品
+    Router::addRoute(['GET', 'POST'], 'program/toplist/hours', 'App\Controller\DjController@programTopListHours'); //电台 - 24小时节目榜
+    Router::addRoute(['GET', 'POST'], 'toplist/newcomer', 'App\Controller\DjController@topListNew'); //电台 - 主播新人榜
+    Router::addRoute(['GET', 'POST'], 'toplist/popular', 'App\Controller\DjController@topListPopular'); //电台 - 最热主播榜
+    Router::addRoute(['GET', 'POST'], 'toplist', 'App\Controller\DjController@topList'); //电台 - 新晋电台榜/热门电台榜
+    Router::addRoute(['GET', 'POST'], 'radio/hot', 'App\Controller\DjController@radioHot'); //电台 - 类别热门电台
+    Router::addRoute(['GET', 'POST'], 'recommend', 'App\Controller\DjController@recommend'); //电台 - 推荐
+    Router::addRoute(['GET', 'POST'], 'catelist', 'App\Controller\DjController@catelist'); //电台 - 分类
+    Router::addRoute(['GET', 'POST'], 'recommend/type', 'App\Controller\DjController@recommendType'); //电台 - 分类推荐
+    Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\DjController@sub'); //电台 - 订阅
+    Router::addRoute(['GET', 'POST'], 'sublist', 'App\Controller\DjController@sublist'); //电台的订阅列表
+    Router::addRoute(['GET', 'POST'], 'paygift', 'App\Controller\DjController@paygift'); //电台 - 付费精选
+    Router::addRoute(['GET', 'POST'], 'category/excludehot', 'App\Controller\DjController@categoryExcludeHot'); //电台 - 非热门类型
+    Router::addRoute(['GET', 'POST'], 'category/recommend', 'App\Controller\DjController@categoryRecommend'); //电台 - 推荐类型
+    Router::addRoute(['GET', 'POST'], 'today/perfered', 'App\Controller\DjController@todayPerfered'); //电台 - 今日优选
+    Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\DjController@detail'); //电台 - 详情
+    Router::addRoute(['GET', 'POST'], 'program', 'App\Controller\DjController@program'); //电台 - 节目
+    Router::addRoute(['GET', 'POST'], 'program/detail', 'App\Controller\DjController@programDetail'); //电台 - 节目详情
+});
+
+Router::addGroup('/msg/', function () {
+    Router::addRoute(['GET', 'POST'], 'private', 'App\Controller\MsgController@privateMsg'); //通知 - 私信
+    Router::addRoute(['GET', 'POST'], 'private/history', 'App\Controller\MsgController@privateHistory'); //私信内容
+    Router::addRoute(['GET', 'POST'], 'comments', 'App\Controller\MsgController@comments'); //通知 - 评论
+    Router::addRoute(['GET', 'POST'], 'forwards', 'App\Controller\MsgController@forwards'); //通知 - @我
+    Router::addRoute(['GET', 'POST'], 'notices', 'App\Controller\MsgController@notices'); //通知 - 通知
+});
+
+Router::addGroup('/send/', function () {
+    Router::addRoute(['GET', 'POST'], 'text', 'App\Controller\SendController@text'); //发送私信
+    Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\SendController@playlist'); //发送私信(带歌单)
 });

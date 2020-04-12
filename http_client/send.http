@@ -1,0 +1,10 @@
+# 发送私信
+GET http://{{host}}/send/text?user_ids=32953014&msg=test
+Accept: application/json
+
+###
+# 发送私信(带歌单)
+GET http://{{host}}/send/playlist?msg=test&user_ids=475625142&playlist=705123491
+Accept: application/json
+
+###

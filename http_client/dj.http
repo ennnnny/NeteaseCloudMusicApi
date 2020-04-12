@@ -8,3 +8,93 @@ GET http://{{host}}/dj/hot
 Accept: application/json
 
 ###
+# 电台 - 节目榜
+GET http://{{host}}/dj/program/toplist?limit=1
+Accept: application/json
+
+###
+# 电台 - 24小时节目榜
+GET http://{{host}}/dj/program/toplist/hours?limit=1
+Accept: application/json
+
+###
+# 电台 - 主播新人榜
+GET http://{{host}}/dj/toplist/newcomer?limit=30
+Accept: application/json
+
+###
+# 电台 - 最热主播榜
+GET http://{{host}}/dj/toplist/popular?limit=30
+Accept: application/json
+
+###
+# 电台 - 新晋电台榜/热门电台榜
+GET http://{{host}}/dj/toplist?type=new&limit=1
+Accept: application/json
+
+###
+# 电台 - 类别热门电台
+GET http://{{host}}/dj/radio/hot?cateId=2001
+Accept: application/json
+
+###
+# 电台 - 推荐
+GET http://{{host}}/dj/recommend
+Accept: application/json
+
+###
+# 电台 - 分类
+GET http://{{host}}/dj/catelist
+Accept: application/json
+
+###
+# 电台 - 分类推荐
+GET http://{{host}}/dj/recommend/type?type=1
+Accept: application/json
+
+###
+# 电台 - 订阅
+GET http://{{host}}/dj/sub?rid=336355127&t=1
+Accept: application/json
+
+###
+# 电台的订阅列表
+GET http://{{host}}/dj/sublist
+Accept: application/json
+
+###
+# 电台 - 付费精选
+GET http://{{host}}/dj/paygift?limit=10&offset=20
+Accept: application/json
+
+###
+# 电台 - 非热门类型
+GET http://{{host}}/dj/category/excludehot
+Accept: application/json
+
+###
+# 电台 - 推荐类型
+GET http://{{host}}/dj/category/recommend
+Accept: application/json
+
+###
+# 电台 - 今日优选
+GET http://{{host}}/dj/today/perfered
+Accept: application/json
+
+###
+# 电台 - 详情
+GET http://{{host}}/dj/detail?rid=336355127
+Accept: application/json
+
+###
+# 电台 - 节目
+GET http://{{host}}/dj/program?rid=336355127&limit=40
+Accept: application/json
+
+###
+# 电台 - 节目详情
+GET http://{{host}}/dj/program/detail?id=1367665101
+Accept: application/json
+
+###

@@ -1,0 +1,25 @@
+# 通知 - 私信
+GET http://{{host}}/msg/private?limit=3
+Accept: application/json
+
+###
+# 私信内容
+GET http://{{host}}/msg/private/history?uid=9003
+Accept: application/json
+
+###
+# 通知 - 评论
+GET http://{{host}}/msg/comments?uid=32953014
+Accept: application/json
+
+###
+# 通知 - @我
+GET http://{{host}}/msg/forwards?limit=3
+Accept: application/json
+
+###
+# 通知 - 通知
+GET http://{{host}}/msg/notices?limit=3
+Accept: application/json
+
+###
