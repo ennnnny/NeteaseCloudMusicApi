@@ -28,3 +28,8 @@ GET http://{{host}}/scrobble?id=518066366&sourceid=36780169&time=291
 Accept: application/json
 
 ###
+# batch批量请求接口
+GET http://{{host}}/batch?/api/v2/banner/get={"clientType":"pc"}
+Accept: application/json
+
+###

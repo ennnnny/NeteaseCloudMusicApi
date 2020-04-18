@@ -106,6 +106,10 @@ abstract class AbstractController
         $client_opt = [
             'verify' => false,
             'timeout' => 3.141,
+            //            'proxy' => [
+            //                'http'  => 'http://192.168.18.177:8888', // Use this proxy with "http"
+            //                'https' => 'http://192.168.18.177:8888', // Use this proxy with "https",
+            //            ]
         ];
 
         $request_ua = $options['ua'] ?? '';
@@ -241,6 +245,20 @@ abstract class AbstractController
                 $answer['status'] = $code;
             } else {
                 $answer['status'] = 400;
+            }
+            if ($options['crypto'] == 'eapi') {
+                if (json_decode($body, true)) {
+                    $answer['body'] = json_decode($body, true);
+                } else {
+                    $res_temp = $this->commonUtils->decrypt($body);
+                    if ($res_temp !== false) {
+                        $res_temp = json_decode($res_temp, true);
+                    } else {
+                        $res_temp = [];
+                    }
+                    $answer['body'] = $res_temp;
+                }
+                return $res->json($answer['body'])->withStatus($answer['status']);
             }
             if (json_decode($body, true)) {
                 $answer['body'] = json_decode($body, true);

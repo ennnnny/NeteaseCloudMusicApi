@@ -450,6 +450,12 @@ class UsersController extends AbstractController
         );
     }
 
+    /**
+     * 云盘歌曲删除.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function cloudDel()
     {
         $validator = $this->validationFactory->make($this->request->all(), [
@@ -520,6 +526,42 @@ class UsersController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/djradio/get/byuser',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 设置.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function setting()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/user/setting',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 我的数字专辑.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function digitalAlbumPurchased()
+    {
+        $data['limit'] = $this->request->input('limit', 30);
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/digitalAlbum/purchased',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

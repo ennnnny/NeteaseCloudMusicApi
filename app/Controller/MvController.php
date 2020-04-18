@@ -81,7 +81,7 @@ class MvController extends AbstractController
         $data['tags'] = json_encode($tags);
         $data['offset'] = $this->request->input('offset', 0);
         $data['limit'] = $this->request->input('limit', 30);
-        $data['total'] = true;
+        $data['total'] = 'true';
 
         return $this->createCloudRequest(
             'POST',

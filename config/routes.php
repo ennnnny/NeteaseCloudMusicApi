@@ -47,6 +47,8 @@ Router::addRoute(['GET', 'POST'], '/daily_signin', 'App\Controller\UsersControll
 Router::addRoute(['GET', 'POST'], '/like', 'App\Controller\UsersController@likeSong'); //喜欢音乐
 Router::addRoute(['GET', 'POST'], '/likelist', 'App\Controller\UsersController@likeList'); //喜欢音乐列表
 Router::addRoute(['GET', 'POST'], '/fm_trash', 'App\Controller\UsersController@fmTrash'); //垃圾桶
+Router::addRoute(['GET', 'POST'], '/setting', 'App\Controller\UsersController@setting'); //设置
+Router::addRoute(['GET', 'POST'], '/digitalAlbum/purchased', 'App\Controller\UsersController@digitalAlbumPurchased'); //我的数字专辑
 
 Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'update', 'App\Controller\PlayListsController@update'); //更新歌单
@@ -93,6 +95,7 @@ Router::addRoute(['GET', 'POST'], '/lyric', 'App\Controller\OthersController@get
 Router::addRoute(['GET', 'POST'], '/banner', 'App\Controller\OthersController@getBanner'); //banner
 Router::addRoute(['GET', 'POST'], '/resource/like', 'App\Controller\OthersController@likeResource'); //资源点赞( MV,电台,视频)
 Router::addRoute(['GET', 'POST'], '/scrobble', 'App\Controller\OthersController@scrobble'); //听歌打卡
+Router::addRoute(['GET', 'POST'], '/batch', 'App\Controller\OthersController@batch'); //batch批量请求接口
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类

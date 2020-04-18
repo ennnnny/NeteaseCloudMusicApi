@@ -23,7 +23,7 @@ class MsgController extends AbstractController
     {
         $data['limit'] = $this->request->input('limit', 30);
         $data['offset'] = $this->request->input('offset', 0);
-        $data['total'] = true;
+        $data['total'] = 'true';
 
         return $this->createCloudRequest(
             'POST',
@@ -55,7 +55,7 @@ class MsgController extends AbstractController
         $data['userId'] = $validated_data['uid'];
         $data['limit'] = $validated_data['limit'] ?? 30;
         $data['time'] = $validated_data['before'] ?? 0;
-        $data['total'] = true;
+        $data['total'] = 'true';
 
         return $this->createCloudRequest(
             'POST',
@@ -87,7 +87,7 @@ class MsgController extends AbstractController
         $data['uid'] = $validated_data['uid'];
         $data['limit'] = $validated_data['limit'] ?? 30;
         $data['time'] = $validated_data['before'] ?? -1;
-        $data['total'] = true;
+        $data['total'] = 'true';
 
         return $this->createCloudRequest(
             'POST',
@@ -107,7 +107,7 @@ class MsgController extends AbstractController
     {
         $data['limit'] = $this->request->input('limit', 30);
         $data['offset'] = $this->request->input('offset', 0);
-        $data['total'] = true;
+        $data['total'] = 'true';
 
         return $this->createCloudRequest(
             'POST',
@@ -127,7 +127,7 @@ class MsgController extends AbstractController
     {
         $data['limit'] = $this->request->input('limit', 30);
         $data['offset'] = $this->request->input('offset', 0);
-        $data['total'] = true;
+        $data['total'] = 'true';
 
         return $this->createCloudRequest(
             'POST',

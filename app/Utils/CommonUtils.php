@@ -144,6 +144,16 @@ class CommonUtils
     }
 
     /**
+     * 解密.
+     * @param $data
+     * @return false|string
+     */
+    public function decrypt($data)
+    {
+        return openssl_decrypt($data, 'aes-128-ecb', pack('H*', bin2hex($this->_EAPIKEY)), OPENSSL_RAW_DATA, '');
+    }
+
+    /**
      * @param $dec
      * @return string
      */

@@ -217,4 +217,29 @@ class OthersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * batch批量请求接口.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function batch()
+    {
+        $data['e_r'] = true;
+        $request_data = $this->request->all();
+        foreach ($request_data as $k => $request_datum) {
+            if (preg_match('/^\\/api\\//', $k)) {
+                $data[$k] = $request_datum;
+//                $data[$k] = json_decode($request_datum, true);
+            }
+        }
+
+        return $this->createCloudRequest(
+            'POST',
+            'http://music.163.com/eapi/batch',
+            $data,
+            ['crypto' => 'eapi', 'url' => '/api/batch', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }
