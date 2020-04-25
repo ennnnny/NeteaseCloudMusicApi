@@ -48,7 +48,11 @@ Router::addRoute(['GET', 'POST'], '/like', 'App\Controller\UsersController@likeS
 Router::addRoute(['GET', 'POST'], '/likelist', 'App\Controller\UsersController@likeList'); //喜欢音乐列表
 Router::addRoute(['GET', 'POST'], '/fm_trash', 'App\Controller\UsersController@fmTrash'); //垃圾桶
 Router::addRoute(['GET', 'POST'], '/setting', 'App\Controller\UsersController@setting'); //设置
-Router::addRoute(['GET', 'POST'], '/digitalAlbum/purchased', 'App\Controller\UsersController@digitalAlbumPurchased'); //我的数字专辑
+
+Router::addGroup('/digitalAlbum/', function () {
+    Router::addRoute(['GET', 'POST'], 'purchased', 'App\Controller\DigitalAlbumController@digitalAlbumPurchased'); //我的数字专辑
+    Router::addRoute(['GET', 'POST'], 'ordering', 'App\Controller\DigitalAlbumController@ordering'); //购买数字专辑
+});
 
 Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'update', 'App\Controller\PlayListsController@update'); //更新歌单

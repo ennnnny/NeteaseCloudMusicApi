@@ -99,8 +99,3 @@ GET http://{{host}}/setting
 Accept: application/json
 
 ###
-# 我的数字专辑
-GET http://{{host}}/digitalAlbum/purchased?limit=10
-Accept: application/json
-
-###

@@ -546,24 +546,4 @@ class UsersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
-
-    /**
-     * 我的数字专辑.
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function digitalAlbumPurchased()
-    {
-        $data['limit'] = $this->request->input('limit', 30);
-        $data['offset'] = $this->request->input('offset', 0);
-        $data['total'] = true;
-
-        return $this->createCloudRequest(
-            'POST',
-            'https://music.163.com/api/digitalAlbum/purchased',
-            $data,
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
-        );
-    }
 }

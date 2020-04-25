@@ -1,0 +1,11 @@
+###
+# 我的数字专辑
+GET http://{{host}}/digitalAlbum/purchased?limit=10
+Accept: application/json
+
+###
+# 购买数字专辑
+GET http://{{host}}/digitalAlbum/ordering?id=86286082&payment=3&quantity=1
+Accept: application/json
+
+###
