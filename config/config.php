@@ -14,6 +14,7 @@ use Psr\Log\LogLevel;
 
 return [
     'app_name' => env('APP_NAME', 'skeleton'),
+    'api_cache' => 120, //接口缓存，单位：秒
     StdoutLoggerInterface::class => [
         'log_level' => [
             LogLevel::ALERT,

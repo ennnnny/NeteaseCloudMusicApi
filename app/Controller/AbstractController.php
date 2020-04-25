@@ -282,10 +282,10 @@ abstract class AbstractController
      */
     public function chooseUserAgent($type = '')
     {
-        $android = $this->cache->get('android_ua');
-        $ios = $this->cache->get('ios_ua');
-        $macOs = $this->cache->get('macos_ua');
-        $windows = $this->cache->get('windows_ua');
+        $android = $this->cache->get('android_ua', []);
+        $ios = $this->cache->get('ios_ua', []);
+        $macOs = $this->cache->get('macos_ua', []);
+        $windows = $this->cache->get('windows_ua', []);
         switch ($type) {
             case 'mobile':
                 $mobile_ua_list = array_merge($android, $ios);
@@ -308,7 +308,7 @@ abstract class AbstractController
      */
     public function chooseChinaIp()
     {
-        $ip_list = $this->cache->get('china_ip');
+        $ip_list = $this->cache->get('china_ip', []);
         return $ip_list[array_rand($ip_list)] ?? '';
     }
 }
