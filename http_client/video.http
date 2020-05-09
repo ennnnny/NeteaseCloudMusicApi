@@ -18,3 +18,8 @@ GET http://{{host}}/video/url?id=89ADDE33C0AAE8EC14B99F6750DB954D
 Accept: application/json
 
 ###
+# 获取视频点赞转发评论数数据
+GET http://{{host}}/video/detail/info?vid=89ADDE33C0AAE8EC14B99F6750DB954D
+Accept: application/json
+
+###

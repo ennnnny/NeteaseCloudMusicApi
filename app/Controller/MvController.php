@@ -151,7 +151,7 @@ class MvController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/mv/detail',
+            'https://music.163.com/api/v1/mv/detail',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -182,6 +182,35 @@ class MvController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/song/enhance/play/mv/url',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取 mv 点赞转发评论数数据.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getDetailInfo()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'mvid' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+
+        $data['threadid'] = 'R_MV_5_' . $validator_data['mvid'];
+        $data['composeliked'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/comment/commentthread/info',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

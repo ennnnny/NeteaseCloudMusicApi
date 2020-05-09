@@ -117,6 +117,7 @@ Router::addGroup('/video/', function () {
     Router::addRoute(['GET', 'POST'], 'group/list', 'App\Controller\VideosController@groupList'); //获取视频标签列表
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\VideosController@detail'); //视频详情
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\VideosController@url'); //获取视频播放地址
+    Router::addRoute(['GET', 'POST'], 'detail/info', 'App\Controller\VideosController@getDetailInfo'); //获取视频点赞转发评论数数据
 });
 
 Router::addGroup('/mv/', function () {
@@ -127,6 +128,7 @@ Router::addGroup('/mv/', function () {
     Router::addRoute(['GET', 'POST'], 'exclusive/rcmd', 'App\Controller\MvController@exclusive'); //网易出品mv
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\MvController@detail'); //获取 mv 数据
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\MvController@url'); //mv 地址
+    Router::addRoute(['GET', 'POST'], 'detail/info', 'App\Controller\MvController@getDetailInfo'); //获取 mv 点赞转发评论数数据
 });
 
 Router::addGroup('/top/', function () {

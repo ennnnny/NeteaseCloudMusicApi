@@ -38,3 +38,8 @@ GET http://{{host}}/mv/url?id=5436712
 Accept: application/json
 
 ###
+# 获取 mv 点赞转发评论数数据
+GET http://{{host}}/mv/detail/info?mvid=5436712
+Accept: application/json
+
+###

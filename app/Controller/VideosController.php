@@ -115,4 +115,33 @@ class VideosController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取视频点赞转发评论数数据.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getDetailInfo()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'vid' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validator_data = $validator->validated();
+
+        $data['threadid'] = 'R_VI_62_' . $validator_data['vid'];
+        $data['composeliked'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/comment/commentthread/info',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }
