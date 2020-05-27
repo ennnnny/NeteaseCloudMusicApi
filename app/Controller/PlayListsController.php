@@ -250,10 +250,10 @@ class PlayListsController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $validator_data = $validator->validated();
-        $data['pid'] = $validator_data['id'];
+        $data['ids'] = '[' . $validator_data['id'] . ']';
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/playlist/delete',
+            'https://music.163.com/weapi/playlist/remove',
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );

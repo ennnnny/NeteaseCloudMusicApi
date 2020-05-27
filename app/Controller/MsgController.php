@@ -127,7 +127,7 @@ class MsgController extends AbstractController
     {
         $data['limit'] = $this->request->input('limit', 30);
         $data['offset'] = $this->request->input('offset', 0);
-        $data['total'] = 'true';
+        $data['time'] = $this->request->input('lasttime', -1);
 
         return $this->createCloudRequest(
             'POST',
