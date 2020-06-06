@@ -146,7 +146,8 @@ class TopsController extends AbstractController
     public function list()
     {
         $validator = $this->validationFactory->make($this->request->all(), [
-            'idx' => 'required',
+            'idx' => '',
+            'id' => '',
         ]);
         if ($validator->fails()) {
             // Handle exception
@@ -195,14 +196,16 @@ class TopsController extends AbstractController
             36 => '3001890046', //云音乐ACG VOCALOID榜
         ];
 
-        $data['id'] = $topList[$validator_data['idx']];
-        $data['n'] = 10000;
+        $data['id'] = $validator_data['id'] ?? $topList[$validator_data['idx']];
+        $data['n'] = 1000;
+        $data['s'] = '5';
+        $data['shareUserId'] = '0';
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v3/playlist/detail',
+            'https://interface3.music.163.com/api/playlist/v4/detail',
             $data,
-            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 }

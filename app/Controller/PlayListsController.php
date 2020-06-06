@@ -348,4 +348,33 @@ class PlayListsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 调整歌单顺序.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOrder()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'ids' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $data = $validator->validated();
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/playlist/order/update',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
 }

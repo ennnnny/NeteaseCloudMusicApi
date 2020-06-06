@@ -67,6 +67,7 @@ Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'subscribe', 'App\Controller\PlayListsController@subscribe'); //收藏/取消收藏歌单
     Router::addRoute(['GET', 'POST'], 'subscribers', 'App\Controller\PlayListsController@subscribers'); //歌单收藏者
     Router::addRoute(['GET', 'POST'], 'tracks', 'App\Controller\PlayListsController@tracks'); //对歌单添加或删除歌曲
+    Router::addRoute(['GET', 'POST'], 'order/update', 'App\Controller\PlayListsController@updateOrder'); //调整歌单顺序
 });
 
 Router::addGroup('/event', function () {
@@ -155,6 +156,7 @@ Router::addGroup('/related/', function () {
 Router::addGroup('/song/', function () {
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\SongsController@getUrl'); // 获取音乐 url
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\SongsController@getDetail'); //获取歌曲详情
+    Router::addRoute(['GET', 'POST'], 'order/update', 'App\Controller\SongsController@updateOrder'); //调整歌曲顺序
 });
 Router::addRoute(['GET', 'POST'], '/check/music', 'App\Controller\SongsController@checkMusic'); //音乐是否可用
 
@@ -194,6 +196,7 @@ Router::addGroup('/personalized', function () {
     Router::addRoute(['GET', 'POST'], '/newsong', 'App\Controller\PersonalizedController@newsong'); //推荐新音乐
     Router::addRoute(['GET', 'POST'], '/djprogram', 'App\Controller\PersonalizedController@djprogram'); //推荐电台
     Router::addRoute(['GET', 'POST'], '/privatecontent', 'App\Controller\PersonalizedController@privatecontent'); //独家放送
+    Router::addRoute(['GET', 'POST'], '/privatecontent/list', 'App\Controller\PersonalizedController@privatecontentList'); //独家放送列表
 });
 Router::addRoute(['GET', 'POST'], '/program/recommend', 'App\Controller\PersonalizedController@program'); //推荐节目
 

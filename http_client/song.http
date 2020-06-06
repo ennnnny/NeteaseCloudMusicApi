@@ -13,3 +13,8 @@ GET http://{{host}}/song/detail?ids=347230,347231
 Accept: application/json
 
 ###
+# 调整歌曲顺序
+GET http://{{host}}/song/order/update?pid=2039116066&ids=[5268328,1219871]
+Accept: application/json
+
+###

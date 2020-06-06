@@ -136,4 +136,35 @@ class SongsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 调整歌曲顺序.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOrder()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'pid' => 'required',
+            'ids' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $validated_data = $validator->validated();
+
+        $data['pid'] = $validated_data['pid'];
+        $data['trackIds'] = $validated_data['ids'];
+        $data['op'] = 'update';
+
+        return $this->createCloudRequest(
+            'POST',
+            'http://interface.music.163.com/api/playlist/manipulate/tracks',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/desc/update']
+        );
+    }
 }

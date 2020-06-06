@@ -23,7 +23,7 @@ class ToplistsController extends AbstractController
     {
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/toplist',
+            'https://music.163.com/api/toplist',
             [],
             ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
         );

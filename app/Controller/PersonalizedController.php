@@ -128,4 +128,24 @@ class PersonalizedController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 独家放送列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function privatecontentList()
+    {
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['limit'] = $this->request->input('limit', 60);
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v2/privatecontent/list',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }
