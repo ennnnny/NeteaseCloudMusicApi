@@ -23,3 +23,23 @@ GET http://{{host}}/video/detail/info?vid=89ADDE33C0AAE8EC14B99F6750DB954D
 Accept: application/json
 
 ###
+# 获取视频标签/分类下的视频
+GET http://{{host}}/video/group?id=9104
+Accept: application/json
+
+###
+# 获取推荐视频
+GET http://{{host}}/video/timeline/recommend
+Accept: application/json
+
+###
+# 获取视频分类列表
+GET http://{{host}}/video/category/list
+Accept: application/json
+
+###
+# 获取全部视频列表
+GET http://{{host}}/video/timeline/all
+Accept: application/json
+
+###

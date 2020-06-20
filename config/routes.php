@@ -116,9 +116,13 @@ Router::addRoute(['GET', 'POST'], '/artists', 'App\Controller\ArtistsController@
 Router::addGroup('/video/', function () {
     Router::addRoute(['GET', 'POST'], 'sub', 'App\Controller\VideosController@sub'); //收藏/取消收藏视频
     Router::addRoute(['GET', 'POST'], 'group/list', 'App\Controller\VideosController@groupList'); //获取视频标签列表
+    Router::addRoute(['GET', 'POST'], 'group', 'App\Controller\VideosController@group'); //获取视频标签/分类下的视频
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\VideosController@detail'); //视频详情
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\VideosController@url'); //获取视频播放地址
     Router::addRoute(['GET', 'POST'], 'detail/info', 'App\Controller\VideosController@getDetailInfo'); //获取视频点赞转发评论数数据
+    Router::addRoute(['GET', 'POST'], 'timeline/recommend', 'App\Controller\VideosController@timelineRecommend'); //获取推荐视频
+    Router::addRoute(['GET', 'POST'], 'category/list', 'App\Controller\VideosController@categoryList'); //获取视频分类列表
+    Router::addRoute(['GET', 'POST'], 'timeline/all', 'App\Controller\VideosController@timelineAll'); //获取全部视频列表
 });
 
 Router::addGroup('/mv/', function () {
