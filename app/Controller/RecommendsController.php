@@ -37,11 +37,13 @@ class RecommendsController extends AbstractController
      */
     public function getSongs()
     {
-        $data['total'] = true;
+        $cookie = $this->request->getCookieParams();
+        unset($cookie['p_ip'], $cookie['p_ua']);
+        $cookie['os'] = 'ios';
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v1/discovery/recommend/songs',
-            $data,
+            'https://music.163.com/api/v3/discovery/recommend/songs',
+            [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
