@@ -12,3 +12,4 @@ vendor/
 *.lock
 .phpunit*
 http_client/http-client.private.env.json
+.run

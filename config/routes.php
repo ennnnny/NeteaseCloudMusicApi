@@ -240,3 +240,8 @@ Router::addGroup('/send/', function () {
     Router::addRoute(['GET', 'POST'], 'text', 'App\Controller\SendController@text'); //发送私信
     Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\SendController@playlist'); //发送私信(带歌单)
 });
+
+Router::addGroup('/history/', function () {
+    Router::addRoute(['GET', 'POST'], 'recommend/songs', 'App\Controller\HistoryController@recommendSongs'); //获取历史日推可用日期列表
+    Router::addRoute(['GET', 'POST'], 'recommend/songs/detail', 'App\Controller\SendController@recommendSongDetail'); //获取历史日推详情数据
+});

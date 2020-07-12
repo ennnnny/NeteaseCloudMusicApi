@@ -1,0 +1,10 @@
+# 获取历史日推可用日期列表
+GET http://{{host}}/history/recommend/songs
+Accept: application/json
+
+###
+# 获取历史日推详情数据
+GET http://{{host}}/history/recommend/songs/detail?date=2020-06-21
+Accept: application/json
+
+###
