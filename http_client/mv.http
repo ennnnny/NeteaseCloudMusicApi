@@ -34,7 +34,7 @@ Accept: application/json
 
 ###
 # mv 地址
-GET http://{{host}}/mv/url?id=5436712
+GET http://{{host}}/mv/url?id=10896407&r=1080
 Accept: application/json
 
 ###

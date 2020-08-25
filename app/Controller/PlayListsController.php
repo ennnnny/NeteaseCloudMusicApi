@@ -328,6 +328,9 @@ class PlayListsController extends AbstractController
      */
     public function tracks()
     {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
         $validator = $this->validationFactory->make($this->request->all(), [
             'pid' => 'required',
             'op' => 'required',
@@ -339,14 +342,27 @@ class PlayListsController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $data = $validator->validated();
-        $data['trackIds'] = '[' . $data['tracks'] . ']';
+        $tracks = explode(',', $data['tracks']);
+        $data['trackIds'] = json_encode($tracks);
         unset($data['tracks']);
-        return $this->createCloudRequest(
+        $data['imme'] = 'true';
+
+        $res = $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/playlist/manipulate/tracks',
             $data,
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $cookie]
         );
+        if ($res->getStatusCode() == 512) {
+            $data['trackIds'] = json_encode([$tracks, $tracks]);
+            return $this->createCloudRequest(
+                'POST',
+                'http://music.163.com/api/playlist/manipulate/tracks',
+                $data,
+                ['crypto' => 'weapi', 'cookie' => $cookie]
+            );
+        }
+        return $res;
     }
 
     /**
@@ -376,5 +392,48 @@ class PlayListsController extends AbstractController
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
+    }
+
+    /**
+     * 歌单封面上传.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateCover()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'imgFile' => 'required|image',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $uploadInfo = $this->dealUpload();
+
+        if ($uploadInfo !== false) {
+            $res = $this->createCloudRequest(
+                'POST',
+                'https://music.163.com/weapi/playlist/cover/update',
+                [
+                    'id' => $this->request->input('id'),
+                    'coverImgId' => $uploadInfo['imgId'],
+                ],
+                ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            );
+            $body = $res->getBody()->getContents();
+            $body = json_decode($body, true);
+
+            return $this->response->json([
+                'code' => 200,
+                'data' => array_merge($uploadInfo, $body),
+            ])->withStatus(200);
+        }
+        return $this->response->json([
+            'code' => 500,
+            'msg' => '请求异常，失败!',
+        ])->withStatus(500);
     }
 }

@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Carbon\Carbon;
+
 class TopsController extends AbstractController
 {
     /**
@@ -84,14 +86,17 @@ class TopsController extends AbstractController
      */
     public function album()
     {
-        $data['area'] = $this->request->input('type', 'ALL'); // ALL,ZH,EA,KR,JP
+        $data['area'] = $this->request->input('area', 'ALL'); // ALL,ZH,EA,KR,JP
         $data['limit'] = $this->request->input('limit', 50);
         $data['offset'] = $this->request->input('offset', 0);
-        $data['total'] = true;
+        $data['type'] = $this->request->input('type', 'new');
+        $data['year'] = $this->request->input('year', Carbon::now()->year);
+        $data['month'] = $this->request->input('month', Carbon::now()->month);
+        $data['total'] = $data['rcmd'] = false;
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/album/new',
+            'https://music.163.com/api/discovery/new/albums/area',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

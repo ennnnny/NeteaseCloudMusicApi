@@ -247,4 +247,30 @@ class ArtistsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 歌手全部歌曲.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function songs()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
+        $data['id'] = $this->request->input('id');
+        $data['private_cloud'] = 'true';
+        $data['work_type'] = 1;
+        $data['order'] = $this->request->input('order', 'hot');
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['limit'] = $this->request->input('limit', 100);
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v1/artist/songs',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
 }

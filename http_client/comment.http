@@ -58,3 +58,8 @@ GET http://{{host}}/comment?t=0&type=1&id=5436712&commentId=3193845528
 Accept: application/json
 
 ###
+# 歌曲楼层评论
+GET http://{{host}}/comment/floor?parentCommentId=1438569889&id=29764564&type=0
+Accept: application/json
+
+###

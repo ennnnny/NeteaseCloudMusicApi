@@ -38,3 +38,8 @@ GET http://{{host}}/artist/desc?id=6452
 Accept: application/json
 
 ###
+# 歌手全部歌曲
+GET http://{{host}}/artist/songs?id=6452
+Accept: application/json
+
+###

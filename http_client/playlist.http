@@ -58,3 +58,4 @@ GET http://{{host}}/playlist/order/update?ids=[111,222]
 Accept: application/json
 
 ###
+# TODO:歌单封面上传

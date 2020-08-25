@@ -242,4 +242,21 @@ class OthersController extends AbstractController
             ['crypto' => 'eapi', 'url' => '/api/batch', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 国家编码列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getCountryCodeList()
+    {
+        $data = [];
+        return $this->createCloudRequest(
+            'POST',
+            'http://interface3.music.163.com/eapi/lbs/countries/v1',
+            $data,
+            ['crypto' => 'eapi', 'url' => '/api/lbs/countries/v1', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

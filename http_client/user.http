@@ -99,3 +99,4 @@ GET http://{{host}}/setting
 Accept: application/json
 
 ###
+# TODO:更新头像

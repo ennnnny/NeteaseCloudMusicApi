@@ -174,10 +174,8 @@ class MvController extends AbstractController
             $errorMessage = $validator->errors()->first();
             return $this->returnMsg(422, $errorMessage);
         }
-        $validator_data = $validator->validated();
-
-        $data['id'] = $validator_data['id'];
-        $data['r'] = $validator_data['res'] ?? 1080;
+        $data = $validator->validated();
+        $data['r'] = $data['r'] ?? 1080;
 
         return $this->createCloudRequest(
             'POST',

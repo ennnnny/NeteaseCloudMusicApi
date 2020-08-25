@@ -478,4 +478,33 @@ class CommentsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
     }
+
+    /**
+     * 歌曲楼层评论.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function floor()
+    {
+        $type_list = [
+            0 => 'R_SO_4_', //歌曲
+            1 => 'R_MV_5_', //MV
+            2 => 'A_PL_0_', //歌单
+            3 => 'R_AL_3_', //专辑
+            4 => 'A_DJ_1_', //电台
+            5 => 'R_VI_62_', //视频
+        ];
+        $data['parentCommentId'] = $this->request->input('parentCommentId');
+        $data['threadId'] = $type_list[$this->request->input('type')] . $this->request->input('id');
+        $data['time'] = $this->request->input('time', -1);
+        $data['limit'] = $this->request->input('limit', 20);
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/resource/comment/floor/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

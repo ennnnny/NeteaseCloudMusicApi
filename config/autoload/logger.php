@@ -12,9 +12,9 @@ declare(strict_types=1);
 return [
     'default' => [
         'handler' => [
-            'class' => Monolog\Handler\RotatingFileHandler::class,
+            'class' => Monolog\Handler\StreamHandler::class,
             'constructor' => [
-                'filename' => BASE_PATH . '/runtime/logs/hyperf.log',
+                'stream' => BASE_PATH . '/runtime/logs/hyperf.log',
                 'level' => Monolog\Logger::DEBUG,
             ],
         ],
@@ -22,9 +22,11 @@ return [
             'class' => Monolog\Formatter\LineFormatter::class,
             'constructor' => [
                 'format' => null,
-                'dateFormat' => null,
+                'dateFormat' => 'Y-m-d H:i:s',
                 'allowInlineLineBreaks' => true,
             ],
+        ],
+        'processors' => [
         ],
     ],
 ];

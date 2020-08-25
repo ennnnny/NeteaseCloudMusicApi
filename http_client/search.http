@@ -3,6 +3,10 @@ GET http://{{host}}/search?keywords=五月天
 Accept: application/json
 
 ###
+GET http://{{host}}/cloudsearch?keywords=五月天
+Accept: application/json
+
+###
 # 默认搜索关键词
 GET http://{{host}}/search/default
 Accept: application/json

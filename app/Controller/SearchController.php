@@ -21,6 +21,22 @@ class SearchController extends AbstractController
      */
     public function index()
     {
+        $data = $this->dealSearch();
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/search/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 处理搜索参数.
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function dealSearch()
+    {
         $validator = $this->validationFactory->make($this->request->all(), [
             'keywords' => 'required',
             'type' => '',
@@ -39,9 +55,22 @@ class SearchController extends AbstractController
         $data['limit'] = $validated_data['limit'] ?? 30;
         $data['offset'] = $validated_data['offset'] ?? 0;
 
+        return $data;
+    }
+
+    /**
+     * 搜索.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function cloud()
+    {
+        $data = $this->dealSearch();
+
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/search/get',
+            'https://music.163.com/weapi/cloudsearch/get/web',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

@@ -295,7 +295,7 @@ class UsersController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $data = $validator->validated();
-        $data['type'] = $data['type'] ?? 1;
+        $data['type'] = $data['type'] ?? 0; // 1: 最近一周, 0: 所有时间
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/v1/play/record',
@@ -545,5 +545,44 @@ class UsersController extends AbstractController
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
+    }
+
+    /**
+     * 更新头像.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function uploadAvatar()
+    {
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'imgFile' => 'required|image',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $uploadInfo = $this->dealUpload();
+
+        if ($uploadInfo !== false) {
+            $res = $this->createCloudRequest(
+                'POST',
+                'https://music.163.com/weapi/user/avatar/upload/v1',
+                ['imgid' => $uploadInfo['imgId']],
+                ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            );
+            $body = $res->getBody()->getContents();
+            $body = json_decode($body, true);
+
+            return $this->response->json([
+                'code' => 200,
+                'data' => array_merge($uploadInfo, $body),
+            ])->withStatus(200);
+        }
+        return $this->response->json([
+            'code' => 500,
+            'msg' => '请求异常，失败!',
+        ])->withStatus(500);
     }
 }

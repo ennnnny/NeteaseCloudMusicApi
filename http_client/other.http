@@ -33,3 +33,8 @@ GET http://{{host}}/batch?/api/v2/banner/get={"clientType":"pc"}
 Accept: application/json
 
 ###
+# 国家编码列表
+GET http://{{host}}/countries/code/list
+Accept: application/json
+
+###

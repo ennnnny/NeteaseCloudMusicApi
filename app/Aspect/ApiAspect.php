@@ -116,7 +116,11 @@ class ApiAspect extends AbstractAspect
             return $this->response->json($content);
         }
         $result = $proceedingJoinPoint->process();
-        $content = json_decode($result->getBody()->getContents(), true);
+        if (is_array($result)) {
+            $content = $result;
+        } else {
+            $content = json_decode($result->getBody()->getContents(), true);
+        }
         $this->cache->set($key, $content, config('api_cache', 120));
         return $result;
     }

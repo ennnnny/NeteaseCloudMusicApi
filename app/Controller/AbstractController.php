@@ -13,6 +13,7 @@ namespace App\Controller;
 
 use App\Utils\CommonUtils;
 use Carbon\Carbon;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\Guzzle\ClientFactory;
@@ -267,11 +268,78 @@ abstract class AbstractController
             return $res->raw($body)->withStatus($answer['status']);
         } catch (RequestException $e) {
             $this->logger->make()->error($e);
+            $code = $e->getResponse()->getStatusCode() ?? 502;
             return $this->response->json([
-                'code' => 502,
+                'code' => $code,
                 'msg' => '请求异常，失败!',
-            ])->withStatus(502);
+            ])->withStatus($code);
         }
+    }
+
+    /**
+     * 处理图片上传.
+     * @throws GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return array|false
+     */
+    public function dealUpload()
+    {
+        $file = $this->request->file('imgFile');
+        $data = [
+            'bucket' => 'yyimgs',
+            'ext' => 'jpg',
+            'filename' => $file->getClientFilename(),
+            'local' => false,
+            'nos_product' => 0,
+            'return_body' => '{"code":200,"size":"$(ObjectSize)"}',
+            'type' => 'other',
+        ];
+        $res = $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/nos/token/alloc',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+        $body = $res->getBody()->getContents();
+        $body = json_decode($body, true);
+        if (isset($body['result'])) {
+            $client = $this->clientFactory->create(['verify' => false]);
+            try {
+                $res2 = $client->request('POST', 'https://nosup-hz1.127.net/yyimgs/' . $body['result']['objectKey'] . '?offset=0&complete=true&version=1.0', [
+                    'body' => $file->getStream(),
+                    'headers' => [
+                        'x-nos-token' => $body['result']['token'],
+                        'Content-Type' => 'image/jpeg',
+                    ],
+                ]);
+                $body2 = $res2->getBody()->getContents();
+                $body2 = json_decode($body2, true);
+
+                if (isset($body2['result'])) {
+                    $imgSize = $this->request->input('imgSize', 300);
+                    $imgX = $this->request->input('imgX', 0);
+                    $imgY = $this->request->input('imgY', 0);
+                    $res3 = $this->createCloudRequest(
+                        'POST',
+                        'https://music.163.com/upload/img/op?id=' . $body2['result']['docId'] . '&op=' . $imgX . 'y' . $imgY . 'y' . $imgSize . 'y' . $imgSize,
+                        [],
+                        ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+                    );
+                    if ($res3->getStatusCode() == 200) {
+                        $body3 = $res3->getBody()->getContents();
+                        $body3 = json_decode($body3, true);
+                        return [
+                            'url_pre' => 'https://p1.music.126.net/' . $body['result']['objectKey'],
+                            'url' => $body3['url'],
+                            'imgId' => $body3['id'],
+                        ];
+                    }
+                }
+            } catch (RequestException $exception) {
+            }
+        }
+
+        return false;
     }
 
     /**

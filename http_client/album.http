@@ -23,3 +23,28 @@ GET http://{{host}}/album/newest
 Accept: application/json
 
 ###
+# 全部新碟
+GET http://{{host}}/album/new?area=KR&limit=10
+Accept: application/json
+
+###
+# 数字专辑-新碟上架
+GET http://{{host}}/album/list?limit=10
+Accept: application/json
+
+###
+# 数字专辑&数字单曲-榜单
+GET http://{{host}}/album/songsaleboard?type=year&year=2020&albumType=0
+Accept: application/json
+
+###
+# 数字专辑-语种风格馆
+GET http://{{host}}/album/list/style?area=Z_H&offset=2
+Accept: application/json
+
+###
+# 数字专辑详情
+GET http://{{host}}/album/detail?id=84547195
+Accept: application/json
+
+###

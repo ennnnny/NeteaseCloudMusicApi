@@ -1,0 +1,10 @@
+# 首页-发现
+GET http://{{host}}/homepage/block/page
+Accept: application/json
+
+###
+# 首页-发现-圆形图标入口列表
+GET http://{{host}}/homepage/dragon/ball
+Accept: application/json
+
+###

@@ -15,7 +15,7 @@ LABEL maintainer="ennnnny <kuye1130@gmail.com>" version="1.0" license="MIT"
 ARG timezone
 
 ENV TIMEZONE=${timezone:-"Asia/Shanghai"} \
-    COMPOSER_VERSION=1.10.1 \
+    COMPOSER_VERSION=1.10.10 \
     APP_ENV=local
 #    APP_ENV=prod
 
