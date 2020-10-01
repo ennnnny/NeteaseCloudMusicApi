@@ -473,4 +473,21 @@ class DjController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 电台个性推荐.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function personalizeRecommend()
+    {
+        $data['limit'] = $this->request->input('limit', 6);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/djradio/personalize/rcmd',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

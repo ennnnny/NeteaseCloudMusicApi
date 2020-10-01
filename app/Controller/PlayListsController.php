@@ -436,4 +436,20 @@ class PlayListsController extends AbstractController
             'msg' => '请求异常，失败!',
         ])->withStatus(500);
     }
+
+    /**
+     * 精品歌单标签列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function highqualityTag()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/playlist/highquality/tags',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

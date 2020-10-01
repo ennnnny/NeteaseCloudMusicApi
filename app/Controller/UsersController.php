@@ -585,4 +585,20 @@ class UsersController extends AbstractController
             'msg' => '请求异常，失败!',
         ])->withStatus(500);
     }
+
+    /**
+     * 获取用户等级信息.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function level()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/user/level',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

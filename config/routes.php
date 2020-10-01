@@ -40,6 +40,7 @@ Router::addGroup('/user/', function () {
     Router::addRoute(['GET', 'POST'], 'cloud/del', 'App\Controller\UsersController@cloudDel'); //云盘歌曲删除
     Router::addRoute(['GET', 'POST'], 'cloud/detail', 'App\Controller\UsersController@cloudDetail'); //云盘数据详情
     Router::addRoute(['GET', 'POST'], 'audio', 'App\Controller\UsersController@audio'); //用户电台
+    Router::addRoute(['GET', 'POST'], 'level', 'App\Controller\UsersController@level'); //获取用户等级信息
 });
 Router::addRoute(['GET', 'POST'], '/follow', 'App\Controller\UsersController@follow'); //关注/取消关注用户
 Router::addRoute(['GET', 'POST'], '/personal_fm', 'App\Controller\UsersController@getPersonalFm'); //私人 FM
@@ -70,6 +71,7 @@ Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'tracks', 'App\Controller\PlayListsController@tracks'); //对歌单添加或删除歌曲
     Router::addRoute(['GET', 'POST'], 'order/update', 'App\Controller\PlayListsController@updateOrder'); //调整歌单顺序
     Router::addRoute(['GET', 'POST'], 'cover/update', 'App\Controller\PlayListsController@updateCover'); //歌单封面上传
+    Router::addRoute(['GET', 'POST'], 'highquality/tags', 'App\Controller\PlayListsController@highqualityTag'); //精品歌单标签列表
 });
 
 Router::addGroup('/event', function () {
@@ -237,6 +239,7 @@ Router::addGroup('/dj/', function () {
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\DjController@detail'); //电台 - 详情
     Router::addRoute(['GET', 'POST'], 'program', 'App\Controller\DjController@program'); //电台 - 节目
     Router::addRoute(['GET', 'POST'], 'program/detail', 'App\Controller\DjController@programDetail'); //电台 - 节目详情
+    Router::addRoute(['GET', 'POST'], 'personalize/recommend', 'App\Controller\DjController@personalizeRecommend'); //电台个性推荐
 });
 
 Router::addGroup('/msg/', function () {

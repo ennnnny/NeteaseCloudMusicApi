@@ -99,4 +99,9 @@ GET http://{{host}}/setting
 Accept: application/json
 
 ###
+# 获取用户等级信息
+GET http://{{host}}/user/level
+Accept: application/json
+
+###
 # TODO:更新头像

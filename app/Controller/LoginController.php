@@ -41,8 +41,8 @@ class LoginController extends AbstractController
         }
         $data = $validator->validated();
         $data['rememberLogin'] = 'true';
-        if (isset($data['countrycode']) && empty($data['countrycode'])) {
-            unset($data['countrycode']);
+        if (! isset($data['countrycode']) || empty($data['countrycode'])) {
+            $data['countrycode'] = '86';
         }
         $data['password'] = md5($data['password']);
         return $this->createCloudRequest(

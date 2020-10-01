@@ -98,3 +98,8 @@ GET http://{{host}}/dj/program/detail?id=1367665101
 Accept: application/json
 
 ###
+# 电台个性推荐
+GET http://{{host}}/dj/personalize/recommend?limit=5
+Accept: application/json
+
+###
