@@ -30,3 +30,7 @@
 
   [1]: https://github.com/Binaryify/NeteaseCloudMusicApi
   [2]: https://hyperf.io/
+
+## Sponsors
+
+[![JetBrains](./images/jetbrains.svg)](https://www.jetbrains.com/?from=NeteaseCloudMusicApi)
