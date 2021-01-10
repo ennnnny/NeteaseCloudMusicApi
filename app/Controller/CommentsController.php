@@ -13,6 +13,16 @@ namespace App\Controller;
 
 class CommentsController extends AbstractController
 {
+    public $type_list = [
+        0 => 'R_SO_4_', //歌曲
+        1 => 'R_MV_5_', //MV
+        2 => 'A_PL_0_', //歌单
+        3 => 'R_AL_3_', //专辑
+        4 => 'A_DJ_1_', //电台
+        5 => 'R_VI_62_', //视频
+        6 => 'A_EV_2_', //动态
+    ];
+
     /**
      * 获取动态评论.
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -305,27 +315,7 @@ class CommentsController extends AbstractController
         $data = $validator->validated();
         $id = $data['rid'] = $data['id'];
         unset($data['id']);
-        $type = '';
-        switch ($data['type']) {
-            case 0:
-                $type = 'R_SO_4_'; //歌曲
-                break;
-            case 1:
-                $type = 'R_MV_5_'; //MV
-                break;
-            case 2:
-                $type = 'A_PL_0_'; //歌单
-                break;
-            case 3:
-                $type = 'R_AL_3_'; //专辑
-                break;
-            case 4:
-                $type = 'A_DJ_1_'; //电台
-                break;
-            case 5:
-                $type = 'R_VI_62_'; //视频
-                break;
-        }
+        $type = $this->type_list[$data['type']];
         unset($data['type']);
         $data['limit'] = $data['limit'] ?? 20;
         $data['offset'] = $data['offset'] ?? 0;
@@ -362,30 +352,7 @@ class CommentsController extends AbstractController
         }
         $query_data = $this->request->all();
         $t = $query_data['t'] == 1 ? 'like' : 'unlike';
-        $type = '';
-        switch ($query_data['type']) {
-            case 0:
-                $type = 'R_SO_4_'; //歌曲
-                break;
-            case 1:
-                $type = 'R_MV_5_'; //MV
-                break;
-            case 2:
-                $type = 'A_PL_0_'; //歌单
-                break;
-            case 3:
-                $type = 'R_AL_3_'; //专辑
-                break;
-            case 4:
-                $type = 'A_DJ_1_'; //电台
-                break;
-            case 5:
-                $type = 'R_VI_62_'; //视频
-                break;
-            case 6:
-                $type = 'A_EV_2_'; //动态
-                break;
-        }
+        $type = $this->type_list[$query_data['type']];
         $data = [
             'threadId' => $type . $query_data['id'],
             'commentId' => $query_data['cid'],
@@ -426,30 +393,8 @@ class CommentsController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $query_data = $this->request->all();
-        $t = $type = '';
-        switch ($query_data['type']) {
-            case 0:
-                $type = 'R_SO_4_'; //歌曲
-                break;
-            case 1:
-                $type = 'R_MV_5_'; //MV
-                break;
-            case 2:
-                $type = 'A_PL_0_'; //歌单
-                break;
-            case 3:
-                $type = 'R_AL_3_'; //专辑
-                break;
-            case 4:
-                $type = 'A_DJ_1_'; //电台
-                break;
-            case 5:
-                $type = 'R_VI_62_'; //视频
-                break;
-            case 6:
-                $type = 'A_EV_2_'; //动态
-                break;
-        }
+        $t = '';
+        $type = $this->type_list[$query_data['type']];
         $data = [
             'threadId' => $type . $query_data['id'],
         ];
@@ -487,14 +432,7 @@ class CommentsController extends AbstractController
      */
     public function floor()
     {
-        $type_list = [
-            0 => 'R_SO_4_', //歌曲
-            1 => 'R_MV_5_', //MV
-            2 => 'A_PL_0_', //歌单
-            3 => 'R_AL_3_', //专辑
-            4 => 'A_DJ_1_', //电台
-            5 => 'R_VI_62_', //视频
-        ];
+        $type_list = $this->type_list;
         $data['parentCommentId'] = $this->request->input('parentCommentId');
         $data['threadId'] = $type_list[$this->request->input('type')] . $this->request->input('id');
         $data['time'] = $this->request->input('time', -1);
@@ -505,6 +443,47 @@ class CommentsController extends AbstractController
             'https://music.163.com/api/resource/comment/floor/get',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 新版评论接口.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function new()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+        $validator = $this->validationFactory->make($this->request->all(), [
+            'id' => 'required',
+            'type' => 'required',
+        ]);
+        if ($validator->fails()) {
+            // Handle exception
+            $errorMessage = $validator->errors()->first();
+            return $this->returnMsg(422, $errorMessage);
+        }
+        $query_data = $this->request->all();
+        $type = $this->type_list[$query_data['type']];
+        $threadId = $type . $query_data['id'];
+        $pageSize = $query_data['pageSize'] ?? 20;
+        $pageNo = $query_data['pageNo'] ?? 1;
+        $query_data['sortType'] = $query_data['sortType'] ?? 1;
+        $data = [
+            'threadId' => $threadId,
+            'pageNo' => $pageNo,
+            'showInner' => $query_data['showInner'] ?? true,
+            'pageSize' => $pageSize,
+            'cursor' => $query_data['sortType'] == 3 ? ($query_data['cursor'] ?? '0') : (($pageNo - 1) * $pageSize),
+            'sortType' => $query_data['sortType'],
+        ];
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v2/resource/comments',
+            $data,
+            ['crypto' => 'eapi', 'url' => '/api/v2/resource/comments', 'cookie' => $cookie]
         );
     }
 }

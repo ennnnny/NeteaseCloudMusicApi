@@ -103,3 +103,8 @@ GET http://{{host}}/dj/personalize/recommend?limit=5
 Accept: application/json
 
 ###
+# 电台订阅者列表
+GET http://{{host}}/dj/subscriber?id=335425050
+Accept: application/json
+
+###

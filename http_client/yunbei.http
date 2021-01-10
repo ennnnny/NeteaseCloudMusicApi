@@ -1,0 +1,45 @@
+# 云贝
+GET http://{{host}}/yunbei
+Accept: application/json
+
+###
+# 云贝支出
+GET http://{{host}}/yunbei/tasks/expense?limit=1
+Accept: application/json
+
+###
+# 云贝账户信息
+GET http://{{host}}/yunbei/info
+Accept: application/json
+
+###
+# 云贝收入
+GET http://{{host}}/yunbei/tasks/receipt?limit=1
+Accept: application/json
+
+###
+# 云贝签到
+GET http://{{host}}/yunbei/sign
+Accept: application/json
+
+###
+# 云贝完成任务
+GET http://{{host}}/yunbei/task/finish?userTaskId=5146243240&depositCode=0
+Accept: application/json
+
+###
+# 云贝所有任务
+GET http://{{host}}/yunbei/tasks
+Accept: application/json
+
+###
+# 云贝todo任务
+GET http://{{host}}/yunbei/tasks/todo
+Accept: application/json
+
+###
+# 云贝今日签到信息
+GET http://{{host}}/yunbei/today
+Accept: application/json
+
+###

@@ -105,3 +105,15 @@ Accept: application/json
 
 ###
 # TODO:更新头像
+
+###
+# 获取用户绑定信息
+GET http://{{host}}/user/binding?uid=32953014
+Accept: application/json
+
+###
+# 获取账号信息
+GET http://{{host}}/user/account
+Accept: application/json
+
+###

@@ -66,3 +66,23 @@ GET http://{{host}}/playlist/highquality/tags
 Accept: application/json
 
 ###
+# 获取点赞过的视频
+GET http://{{host}}/playlist/mylike
+Accept: application/json
+
+###
+# 收藏视频到视频歌单
+GET http://{{host}}/playlist/track/add?pid=5271999357&ids=186041
+Accept: application/json
+
+###
+# 删除视频歌单里的视频
+GET http://{{host}}/playlist/track/delete?pid=5271999357&ids=186041
+Accept: application/json
+
+###
+# 最近播放的视频
+GET http://{{host}}/playlist/video/recent
+Accept: application/json
+
+###

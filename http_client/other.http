@@ -38,3 +38,8 @@ GET http://{{host}}/countries/code/list
 Accept: application/json
 
 ###
+# 音乐日历
+GET http://{{host}}/calendar?startTime=1606752000000&endTime=1609430399999
+Accept: application/json
+
+###

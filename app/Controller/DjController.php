@@ -26,7 +26,7 @@ class DjController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/weapi/djradio/banner/get',
+            'https://music.163.com/weapi/djradio/banner/get',
             [],
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
@@ -339,7 +339,7 @@ class DjController extends AbstractController
     {
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/weapi/djradio/category/excludehot',
+            'https://music.163.com/weapi/djradio/category/excludehot',
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -355,7 +355,7 @@ class DjController extends AbstractController
     {
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/weapi/djradio/home/category/recommend',
+            'https://music.163.com/weapi/djradio/home/category/recommend',
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -373,7 +373,7 @@ class DjController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/weapi/djradio/home/today/perfered',
+            'https://music.163.com/weapi/djradio/home/today/perfered',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -400,7 +400,7 @@ class DjController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/djradio/get',
+            'https://music.163.com/api/djradio/v2/get',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -468,7 +468,7 @@ class DjController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/dj/program/detail',
+            'https://music.163.com/api/dj/program/detail',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -486,6 +486,26 @@ class DjController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/api/djradio/personalize/rcmd',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 电台订阅者列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function subscriber()
+    {
+        $data['time'] = $this->request->input('time', '-1');
+        $data['id'] = $this->request->input('id');
+        $data['limit'] = $this->request->input('limit', '20');
+        $data['total'] = 'true';
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/djradio/subscriber',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

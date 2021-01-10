@@ -92,7 +92,8 @@ class TopsController extends AbstractController
         $data['type'] = $this->request->input('type', 'new');
         $data['year'] = $this->request->input('year', Carbon::now()->year);
         $data['month'] = $this->request->input('month', Carbon::now()->month);
-        $data['total'] = $data['rcmd'] = false;
+        $data['total'] = false;
+        $data['rcmd'] = true;
 
         return $this->createCloudRequest(
             'POST',

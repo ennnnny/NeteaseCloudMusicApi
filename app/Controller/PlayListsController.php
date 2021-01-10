@@ -82,7 +82,7 @@ class PlayListsController extends AbstractController
         $data = $validator->validated();
         return $this->createCloudRequest(
             'POST',
-            'http://interface3.music.163.com/eapi/playlist/desc/update',
+            'https://interface3.music.163.com/eapi/playlist/desc/update',
             $data,
             ['crypto' => 'eapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/desc/update']
         );
@@ -108,7 +108,7 @@ class PlayListsController extends AbstractController
         $data = $validator->validated();
         return $this->createCloudRequest(
             'POST',
-            'http://interface3.music.163.com/eapi/playlist/update/name',
+            'https://interface3.music.163.com/eapi/playlist/update/name',
             $data,
             ['crypto' => 'eapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/update/name']
         );
@@ -134,7 +134,7 @@ class PlayListsController extends AbstractController
         $data = $validator->validated();
         return $this->createCloudRequest(
             'POST',
-            'http://interface3.music.163.com/eapi/playlist/tags/update',
+            'https://interface3.music.163.com/eapi/playlist/tags/update',
             $data,
             ['crypto' => 'eapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/tags/update']
         );
@@ -194,9 +194,9 @@ class PlayListsController extends AbstractController
         $data['s'] = $this->request->input('s', 8);
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v3/playlist/detail',
+            'https://music.163.com/api/v6/playlist/detail',
             $data,
-            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'api', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
@@ -213,7 +213,8 @@ class PlayListsController extends AbstractController
 
         $validator = $this->validationFactory->make($this->request->all(), [
             'name' => 'required',
-            'privacy' => '',
+            'privacy' => '', //0 为普通歌单，10 为隐私歌单
+            'type' => '',
         ]);
         if ($validator->fails()) {
             // Handle exception
@@ -222,9 +223,10 @@ class PlayListsController extends AbstractController
         }
         $data = $validator->validated();
         $data['privacy'] = $data['privacy'] ?? 0;
+        $data['type'] = $data['type'] ?? 'NORMAL'; // NORMAL|VIDEO
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/playlist/create',
+            'https://music.163.com/api/playlist/create',
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
@@ -349,7 +351,7 @@ class PlayListsController extends AbstractController
 
         $res = $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/playlist/manipulate/tracks',
+            'https://music.163.com/api/playlist/manipulate/tracks',
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
@@ -357,7 +359,7 @@ class PlayListsController extends AbstractController
             $data['trackIds'] = json_encode([$tracks, $tracks]);
             return $this->createCloudRequest(
                 'POST',
-                'http://music.163.com/api/playlist/manipulate/tracks',
+                'https://music.163.com/api/playlist/manipulate/tracks',
                 $data,
                 ['crypto' => 'weapi', 'cookie' => $cookie]
             );
@@ -449,6 +451,96 @@ class PlayListsController extends AbstractController
             'POST',
             'https://music.163.com/api/playlist/highquality/tags',
             [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 最近播放的视频.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function videoRecent()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/playlist/video/recent',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取点赞过的视频.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function myLike()
+    {
+        $data['time'] = $this->request->input('time', '-1');
+        $data['limit'] = $this->request->input('limit', '12');
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/mlog/playlist/mylike/bytime/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 收藏视频到视频歌单.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function addTrack()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+        $ids = $this->request->input('ids', '');
+        $data['id'] = $this->request->input('pid');
+        $tracks = [];
+        foreach ($ids as $id) {
+            $tracks[] = [
+                'type' => 3,
+                'id' => $id,
+            ];
+        }
+        $data['tracks'] = json_encode($tracks);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/playlist/track/add',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 删除视频歌单里的视频.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteTrack()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+        $ids = $this->request->input('ids', '');
+        $data['id'] = $this->request->input('pid');
+        $tracks = [];
+        foreach ($ids as $id) {
+            $tracks[] = [
+                'type' => 3,
+                'id' => $id,
+            ];
+        }
+        $data['tracks'] = json_encode($tracks);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/playlist/track/delete',
+            $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }

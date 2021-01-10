@@ -34,7 +34,7 @@ class SharesController extends AbstractController
         $data = $validator->validated();
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/weapi/share/friends/resource',
+            'https://music.163.com/weapi/share/friends/resource',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

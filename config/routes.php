@@ -41,6 +41,8 @@ Router::addGroup('/user/', function () {
     Router::addRoute(['GET', 'POST'], 'cloud/detail', 'App\Controller\UsersController@cloudDetail'); //云盘数据详情
     Router::addRoute(['GET', 'POST'], 'audio', 'App\Controller\UsersController@audio'); //用户电台
     Router::addRoute(['GET', 'POST'], 'level', 'App\Controller\UsersController@level'); //获取用户等级信息
+    Router::addRoute(['GET', 'POST'], 'binding', 'App\Controller\UsersController@binding'); //获取用户绑定信息
+    Router::addRoute(['GET', 'POST'], 'account', 'App\Controller\UsersController@account'); //获取账号信息
 });
 Router::addRoute(['GET', 'POST'], '/follow', 'App\Controller\UsersController@follow'); //关注/取消关注用户
 Router::addRoute(['GET', 'POST'], '/personal_fm', 'App\Controller\UsersController@getPersonalFm'); //私人 FM
@@ -72,6 +74,10 @@ Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'order/update', 'App\Controller\PlayListsController@updateOrder'); //调整歌单顺序
     Router::addRoute(['GET', 'POST'], 'cover/update', 'App\Controller\PlayListsController@updateCover'); //歌单封面上传
     Router::addRoute(['GET', 'POST'], 'highquality/tags', 'App\Controller\PlayListsController@highqualityTag'); //精品歌单标签列表
+    Router::addRoute(['GET', 'POST'], 'video/recent', 'App\Controller\PlayListsController@videoRecent'); //最近播放的视频
+    Router::addRoute(['GET', 'POST'], 'mylike', 'App\Controller\PlayListsController@myLike'); //获取点赞过的视频
+    Router::addRoute(['GET', 'POST'], 'track/add', 'App\Controller\PlayListsController@addTrack'); //收藏视频到视频歌单
+    Router::addRoute(['GET', 'POST'], 'track/delete', 'App\Controller\PlayListsController@deleteTrack'); //删除视频歌单里的视频
 });
 
 Router::addGroup('/event', function () {
@@ -97,6 +103,7 @@ Router::addGroup('/comment', function () {
     Router::addRoute(['GET', 'POST'], '/like', 'App\Controller\CommentsController@like'); //给评论点赞
     Router::addRoute(['GET', 'POST'], '', 'App\Controller\CommentsController@operate'); //发送/删除评论
     Router::addRoute(['GET', 'POST'], 'floor', 'App\Controller\CommentsController@floor'); //歌曲楼层评论
+    Router::addRoute(['GET', 'POST'], '/new', 'App\Controller\CommentsController@new'); //新版评论接口
 });
 
 Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题
@@ -107,6 +114,7 @@ Router::addRoute(['GET', 'POST'], '/resource/like', 'App\Controller\OthersContro
 Router::addRoute(['GET', 'POST'], '/scrobble', 'App\Controller\OthersController@scrobble'); //听歌打卡
 Router::addRoute(['GET', 'POST'], '/batch', 'App\Controller\OthersController@batch'); //batch批量请求接口
 Router::addRoute(['GET', 'POST'], '/countries/code/list', 'App\Controller\OthersController@getCountryCodeList'); //国家编码列表
+Router::addRoute(['GET', 'POST'], '/calendar', 'App\Controller\OthersController@calendar'); //音乐日历
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
@@ -240,6 +248,7 @@ Router::addGroup('/dj/', function () {
     Router::addRoute(['GET', 'POST'], 'program', 'App\Controller\DjController@program'); //电台 - 节目
     Router::addRoute(['GET', 'POST'], 'program/detail', 'App\Controller\DjController@programDetail'); //电台 - 节目详情
     Router::addRoute(['GET', 'POST'], 'personalize/recommend', 'App\Controller\DjController@personalizeRecommend'); //电台个性推荐
+    Router::addRoute(['GET', 'POST'], 'subscriber', 'App\Controller\DjController@subscriber'); //电台订阅者列表
 });
 
 Router::addGroup('/msg/', function () {
@@ -263,4 +272,16 @@ Router::addGroup('/history/', function () {
 Router::addGroup('/homepage/', function () {
     Router::addRoute(['GET', 'POST'], 'block/page', 'App\Controller\HomepageController@blockPage'); //首页-发现
     Router::addRoute(['GET', 'POST'], 'dragon/ball', 'App\Controller\HomepageController@dragonBall'); //首页-发现-圆形图标入口列表
+});
+
+Router::addGroup('/yunbei', function () {
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\YunBeiController@index'); //云贝
+    Router::addRoute(['GET', 'POST'], '/tasks/expense', 'App\Controller\YunBeiController@expense'); //云贝支出
+    Router::addRoute(['GET', 'POST'], '/info', 'App\Controller\YunBeiController@info'); //云贝账户信息
+    Router::addRoute(['GET', 'POST'], '/tasks/receipt', 'App\Controller\YunBeiController@receipt'); //云贝收入
+    Router::addRoute(['GET', 'POST'], '/sign', 'App\Controller\YunBeiController@sign'); //云贝签到
+    Router::addRoute(['GET', 'POST'], '/task/finish', 'App\Controller\YunBeiController@taskFinish'); //云贝完成任务
+    Router::addRoute(['GET', 'POST'], '/tasks', 'App\Controller\YunBeiController@task'); //云贝所有任务
+    Router::addRoute(['GET', 'POST'], '/tasks/todo', 'App\Controller\YunBeiController@taskTodo'); //云贝todo任务
+    Router::addRoute(['GET', 'POST'], '/today', 'App\Controller\YunBeiController@today'); //云贝今日签到信息
 });

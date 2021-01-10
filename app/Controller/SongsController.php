@@ -162,7 +162,7 @@ class SongsController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'http://interface.music.163.com/api/playlist/manipulate/tracks',
+            'https://interface.music.163.com/api/playlist/manipulate/tracks',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/desc/update']
         );

@@ -110,9 +110,10 @@ class UsersController extends AbstractController
         $data = $validator->validated();
         $data['limit'] = $data['limit'] ?? 30;
         $data['offset'] = $data['offset'] ?? 0;
+        $data['includeVideo'] = true;
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/user/playlist',
+            'https://music.163.com/api/user/playlist',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -471,7 +472,7 @@ class UsersController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/weapi/cloud/del',
+            'https://music.163.com/weapi/cloud/del',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -597,6 +598,38 @@ class UsersController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/user/level',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取用户绑定信息.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function binding()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v1/user/bindings/' . $this->request->input('uid'),
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取账号信息.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function account()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/nuser/account/get' . $this->request->input('uid'),
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

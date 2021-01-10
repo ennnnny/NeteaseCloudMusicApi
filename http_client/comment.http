@@ -63,3 +63,8 @@ GET http://{{host}}/comment/floor?parentCommentId=1438569889&id=29764564&type=0
 Accept: application/json
 
 ###
+# 新版评论接口
+GET http://{{host}}/comment/new?type=0&id=1407551413&sortType=3
+Accept: application/json
+
+###

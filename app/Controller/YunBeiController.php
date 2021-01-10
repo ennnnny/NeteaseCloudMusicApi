@@ -11,142 +11,155 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-class PersonalizedController extends AbstractController
+class YunBeiController extends AbstractController
 {
     /**
-     * 推荐 mv.
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function mv()
-    {
-        return $this->createCloudRequest(
-            'POST',
-            'https://music.163.com/weapi/personalized/mv',
-            [],
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
-        );
-    }
-
-    /**
-     * 推荐歌单.
+     * 云贝.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function index()
     {
-        $data['limit'] = $this->request->input('limit', 30);
-        $data['total'] = true;
-        $data['n'] = 1000;
-
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/personalized/playlist',
-            $data,
+            'https://music.163.com/api/point/signed/get',
+            [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
     /**
-     * 推荐新音乐.
+     * 云贝支出.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function newsong()
+    public function expense()
     {
-        $data['type'] = 'recommend';
         $data['limit'] = $this->request->input('limit', 10);
-        $data['areaId'] = $this->request->input('areaId', 0);
-
+        $data['offset'] = $this->request->input('offset', 0);
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/personalized/newsong',
+            'https://music.163.com/store/api/point/expense',
             $data,
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'api', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
     /**
-     * 推荐电台.
+     * 云贝账户信息.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function djprogram()
+    public function info()
     {
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/personalized/djprogram',
+            'https://music.163.com/api/v1/user/info',
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
     /**
-     * 推荐节目.
+     * 云贝收入.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function program()
+    public function receipt()
     {
-        $validator = $this->validationFactory->make($this->request->all(), [
-            'type' => 'required',
-        ]);
-        if ($validator->fails()) {
-            // Handle exception
-            $errorMessage = $validator->errors()->first();
-            return $this->returnMsg(422, $errorMessage);
-        }
-        $validator_data = $validator->validated();
-
-        $data['cateId'] = $validator_data['type'];
+        $data['limit'] = $this->request->input('limit', 10);
         $data['offset'] = $this->request->input('offset', 0);
-        $data['limit'] = $this->request->input('limit', 30);
-
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/program/recommend/v1',
+            'https://music.163.com/store/api/point/receipt',
+            $data,
+            ['crypto' => 'api', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 云贝签到.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function sign()
+    {
+        $data['type'] = '0';
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/point/dailyTask',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
     /**
-     * 独家放送
+     * 云贝完成任务
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function privatecontent()
+    public function taskFinish()
+    {
+        $data['userTaskId'] = $this->request->input('userTaskId');
+        $data['depositCode'] = $this->request->input('depositCode', '0');
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/usertool/task/point/receive',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 云贝所有任务
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function task()
     {
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/personalized/privatecontent',
+            'https://music.163.com/api/usertool/task/list/all',
             [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 
     /**
-     * 独家放送列表.
+     * 云贝todo任务
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function privatecontentList()
+    public function taskTodo()
     {
-        $data['offset'] = $this->request->input('offset', 0);
-        $data['limit'] = $this->request->input('limit', 60);
-        $data['total'] = true;
-
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/api/v2/privatecontent/list',
-            $data,
+            'https://music.163.com/api/usertool/task/todo/query',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 云贝今日签到信息.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function today()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/point/today/get',
+            [],
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }

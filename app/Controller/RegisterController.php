@@ -105,7 +105,7 @@ class RegisterController extends AbstractController
         ];
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/eapi/cellphone/existence/check',
+            'https://music.163.com/eapi/cellphone/existence/check',
             $data,
             ['crypto' => 'eapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/cellphone/existence/check']
         );
@@ -140,7 +140,7 @@ class RegisterController extends AbstractController
         $data['password'] = md5($data['password']);
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/register/cellphone',
+            'https://music.163.com/api/register/cellphone',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -167,7 +167,7 @@ class RegisterController extends AbstractController
         $data = $validator->validated();
         return $this->createCloudRequest(
             'POST',
-            'http://music.163.com/eapi/activate/initProfile',
+            'https://music.163.com/eapi/activate/initProfile',
             $data,
             ['crypto' => 'eapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/activate/initProfile']
         );
