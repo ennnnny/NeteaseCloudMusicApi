@@ -14,6 +14,27 @@ namespace App\Controller;
 class DigitalAlbumController extends AbstractController
 {
     /**
+     * 全部新碟
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function new()
+    {
+        $data['limit'] = $this->request->input('limit', 30);
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['total'] = true;
+        $data['area'] = $this->request->input('area', 'ALL'); //ALL:全部,ZH:华语,EA:欧美,KR:韩国,JP:日本
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/album/new',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
      * 我的数字专辑.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException

@@ -54,6 +54,7 @@ Router::addRoute(['GET', 'POST'], '/setting', 'App\Controller\UsersController@se
 Router::addRoute(['GET', 'POST'], '/avatar/upload', 'App\Controller\UsersController@uploadAvatar'); //更新头像
 
 Router::addGroup('/digitalAlbum/', function () {
+    Router::addRoute(['GET', 'POST'], 'new', 'App\Controller\DigitalAlbumController@new'); //全部新碟
     Router::addRoute(['GET', 'POST'], 'purchased', 'App\Controller\DigitalAlbumController@digitalAlbumPurchased'); //我的数字专辑
     Router::addRoute(['GET', 'POST'], 'ordering', 'App\Controller\DigitalAlbumController@ordering'); //购买数字专辑
 });

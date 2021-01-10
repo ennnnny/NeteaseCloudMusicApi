@@ -49,7 +49,7 @@ RUN set -ex \
     && echo 'ZSH_THEME="random"' > ~/.oh-my-zsh/custom/custom.zsh \
     # ---------- clear works ----------
     && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
-    && echo -e "\033[42;37m Build Completed :).\033[0m\n"
+    && echo -e "\033[42;37m Build Completed :)\033[0m\n"
 
 #RUN composer install --no-dev \
 #    && composer dump-autoload -o \
@@ -59,9 +59,12 @@ RUN set -ex \
 
 WORKDIR /opt/www
 
+COPY . /opt/www
+RUN composer install --no-dev -o && php bin/hyperf.php
+
 VOLUME /opt/www
 
 EXPOSE 9501
 
-ENTRYPOINT php /opt/www/bin/hyperf.php start
+ENTRYPOINT ["php", "/opt/www/bin/hyperf.php", "start"]
 CMD ["zsh"]
