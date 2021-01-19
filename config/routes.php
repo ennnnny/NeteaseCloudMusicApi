@@ -103,9 +103,11 @@ Router::addGroup('/comment', function () {
     Router::addRoute(['GET', 'POST'], '/hot', 'App\Controller\CommentsController@hot'); //热门评论
     Router::addRoute(['GET', 'POST'], '/like', 'App\Controller\CommentsController@like'); //给评论点赞
     Router::addRoute(['GET', 'POST'], '', 'App\Controller\CommentsController@operate'); //发送/删除评论
-    Router::addRoute(['GET', 'POST'], 'floor', 'App\Controller\CommentsController@floor'); //歌曲楼层评论
+    Router::addRoute(['GET', 'POST'], '/floor', 'App\Controller\CommentsController@floor'); //歌曲楼层评论
     Router::addRoute(['GET', 'POST'], '/new', 'App\Controller\CommentsController@new'); //新版评论接口
+    Router::addRoute(['GET', 'POST'], '/hug/list', 'App\Controller\CommentsController@hugList'); //评论抱一抱列表
 });
+Router::addRoute(['GET', 'POST'], '/hug/comment', 'App\Controller\CommentsController@hug'); //抱一抱评论
 
 Router::addRoute(['GET', 'POST'], '/hot/topic', 'App\Controller\OthersController@getHotTopic'); //获取热门话题
 Router::addRoute(['GET', 'POST'], '/playmode/intelligence/list', 'App\Controller\OthersController@getIntelligenceList'); //智能播放
@@ -116,6 +118,7 @@ Router::addRoute(['GET', 'POST'], '/scrobble', 'App\Controller\OthersController@
 Router::addRoute(['GET', 'POST'], '/batch', 'App\Controller\OthersController@batch'); //batch批量请求接口
 Router::addRoute(['GET', 'POST'], '/countries/code/list', 'App\Controller\OthersController@getCountryCodeList'); //国家编码列表
 Router::addRoute(['GET', 'POST'], '/calendar', 'App\Controller\OthersController@calendar'); //音乐日历
+Router::addRoute(['GET', 'POST'], '/topic/sublist', 'App\Controller\OthersController@topicSubList'); //收藏的专栏
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
@@ -126,6 +129,9 @@ Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'album', 'App\Controller\ArtistsController@getAlbum'); //获取歌手专辑
     Router::addRoute(['GET', 'POST'], 'desc', 'App\Controller\ArtistsController@getDesc'); //获取歌手描述
     Router::addRoute(['GET', 'POST'], 'songs', 'App\Controller\ArtistsController@songs'); //歌手全部歌曲
+    Router::addRoute(['GET', 'POST'], 'new/mv', 'App\Controller\ArtistsController@newMv'); //关注歌手新MV
+    Router::addRoute(['GET', 'POST'], 'new/song', 'App\Controller\ArtistsController@newSong'); //关注歌手新歌
+    Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\ArtistsController@detail'); //获取歌手详情
 });
 Router::addRoute(['GET', 'POST'], '/artists', 'App\Controller\ArtistsController@getInfo'); //获取歌手单曲
 
@@ -258,11 +264,13 @@ Router::addGroup('/msg/', function () {
     Router::addRoute(['GET', 'POST'], 'comments', 'App\Controller\MsgController@comments'); //通知 - 评论
     Router::addRoute(['GET', 'POST'], 'forwards', 'App\Controller\MsgController@forwards'); //通知 - @我
     Router::addRoute(['GET', 'POST'], 'notices', 'App\Controller\MsgController@notices'); //通知 - 通知
+    Router::addRoute(['GET', 'POST'], 'recentcontact', 'App\Controller\MsgController@recentContact'); //最近联系人
 });
 
 Router::addGroup('/send/', function () {
     Router::addRoute(['GET', 'POST'], 'text', 'App\Controller\SendController@text'); //发送私信
     Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\SendController@playlist'); //发送私信(带歌单)
+    Router::addRoute(['GET', 'POST'], 'song', 'App\Controller\SendController@song'); //发送私信音乐
 });
 
 Router::addGroup('/history/', function () {

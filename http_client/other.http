@@ -43,3 +43,8 @@ GET http://{{host}}/calendar?startTime=1606752000000&endTime=1609430399999
 Accept: application/json
 
 ###
+# 收藏的专栏
+GET http://{{host}}/topic/sublist?limit=2&offset=1
+Accept: application/json
+
+###

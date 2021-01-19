@@ -279,4 +279,24 @@ class OthersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 收藏的专栏.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function topicSubList()
+    {
+        $data['limit'] = $this->request->input('limit', 50);
+        $data['offset'] = $this->request->input('offset', 0);
+        $data['total'] = true;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/topic/sublist',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

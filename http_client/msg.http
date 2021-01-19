@@ -23,3 +23,8 @@ GET http://{{host}}/msg/notices?limit=3
 Accept: application/json
 
 ###
+# 最近联系人
+GET http://{{host}}/msg/recentcontact
+Accept: application/json
+
+###

@@ -43,3 +43,18 @@ GET http://{{host}}/artist/songs?id=6452
 Accept: application/json
 
 ###
+# 关注歌手新MV
+GET http://{{host}}/artist/new/mv?limit=1&before=1602777625000
+Accept: application/json
+
+###
+# 关注歌手新歌
+GET http://{{host}}/artist/new/song?limit=1&before=1602777625000
+Accept: application/json
+
+###
+# 获取歌手详情
+GET http://{{host}}/artist/detail?id=11972054
+Accept: application/json
+
+###

@@ -374,9 +374,17 @@ abstract class AbstractController
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @return mixed
      */
-    public function chooseChinaIp()
+    public function chooseChinaIp(): string
     {
         $ip_list = $this->cache->get('china_ip', []);
         return $ip_list[array_rand($ip_list)] ?? '';
+    }
+
+    /**
+     * 获取匿名token.
+     */
+    public function getAnonymousToken(): string
+    {
+        return '8aae43f148f990410b9a2af38324af24e87ab9227c9265627ddd10145db744295fcd8701dc45b1ab8985e142f491516295dd965bae848761274a577a62b0fdc54a50284d1e434dcc04ca6d1a52333c9a';
     }
 }

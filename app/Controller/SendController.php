@@ -82,4 +82,28 @@ class SendController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
     }
+
+    /**
+     * 发送私信音乐.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function song()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.0';
+        $data['id'] = $this->request->input('id');
+        $data['msg'] = $this->request->input('msg', '');
+        $data['type'] = 'song';
+        $data['userIds'] = '[' . $this->request->input('user_ids') . ']';
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/msg/private/send',
+            $data,
+            ['crypto' => 'api', 'cookie' => $cookie]
+        );
+    }
 }

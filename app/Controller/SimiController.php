@@ -30,12 +30,16 @@ class SimiController extends AbstractController
             return $this->returnMsg(422, $errorMessage);
         }
         $validator_data = $validator->validated();
+        $cookie = $this->request->getCookieParams();
+        if (! isset($cookie['MUSIC_U'])) {
+            $cookie['MUSIC_A'] = $this->getAnonymousToken();
+        }
 
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/discovery/simiArtist',
             ['artistid' => $validator_data['id']],
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $cookie]
         );
     }
 

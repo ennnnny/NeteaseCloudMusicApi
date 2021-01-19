@@ -231,6 +231,11 @@ class UsersController extends AbstractController
             $errorMessage = $validator->errors()->first();
             return $this->returnMsg(422, $errorMessage);
         }
+
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.0';
+
         $data = $validator->validated();
         $uid = $data['uid'];
         $data['getcounts'] = true;
@@ -241,9 +246,9 @@ class UsersController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/event/get/' . $uid,
+            'https://music.163.com/api/event/get/' . $uid,
             $data,
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'api', 'cookie' => $cookie]
         );
     }
 
@@ -367,7 +372,7 @@ class UsersController extends AbstractController
         $alg = $validator_data['alg'] ?? 'itembased';
         $time = $validator_data['time'] ?? 25;
         $data['trackId'] = $validator_data['id'];
-        $data['like'] = $validator_data['like'] == 'false' ? false : true;
+        $data['like'] = $this->commonUtils->toBoolean($validator_data['like']);
 
         return $this->createCloudRequest(
             'POST',

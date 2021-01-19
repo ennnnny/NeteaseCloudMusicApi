@@ -486,4 +486,64 @@ class CommentsController extends AbstractController
             ['crypto' => 'eapi', 'url' => '/api/v2/resource/comments', 'cookie' => $cookie]
         );
     }
+
+    /**
+     * 评论抱一抱列表.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function hugList()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '7.3.27';
+
+        $query_data = $this->request->all();
+        $type = $this->type_list[($query_data['type'] ?? 0)];
+        $threadId = $type . $query_data['sid'];
+        $data['targetUserId'] = $query_data['uid'];
+        $data['commentId'] = $query_data['cid'];
+        $data['cursor'] = $query_data['cursor'] ?? '-1';
+        $data['threadId'] = $threadId;
+        $data['pageNo'] = $query_data['page'] ?? 1;
+        $data['idCursor'] = $query_data['idCursor'] ?? -1;
+        $data['pageSize'] = $query_data['pageSize'] ?? 100;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v2/resource/comments/hug/list',
+            $data,
+            ['crypto' => 'api', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 抱一抱评论.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function hug()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.00';
+
+        $query_data = $this->request->all();
+        $type = $this->type_list[($query_data['type'] ?? 0)];
+        $threadId = $type . $query_data['sid'];
+        $data = [
+            'targetUserId' => $query_data['uid'],
+            'commentId' => $query_data['cid'],
+            'threadId' => $threadId,
+        ];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/v2/resource/comments/hug/listener',
+            $data,
+            ['crypto' => 'api', 'cookie' => $cookie]
+        );
+    }
 }

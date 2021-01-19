@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Carbon\Carbon;
+
 class ArtistsController extends AbstractController
 {
     /**
@@ -271,6 +273,68 @@ class ArtistsController extends AbstractController
             'https://music.163.com/api/v1/artist/songs',
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 关注歌手新MV.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function newMv()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.00';
+
+        $data['limit'] = $this->request->input('limit', 20);
+        $data['startTimestamp'] = $this->request->input('before', Carbon::now()->timestamp . '000');
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/sub/artist/new/works/mv/list',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 关注歌手新歌.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function newSong()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.00';
+
+        $data['limit'] = $this->request->input('limit', 20);
+        $data['startTimestamp'] = $this->request->input('before', Carbon::now()->timestamp . '000');
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/sub/artist/new/works/song/list',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
+
+    /**
+     * 获取歌手详情.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detail()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/artist/head/info/get',
+            ['id' => $this->request->input('id')],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 }

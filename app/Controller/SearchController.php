@@ -70,7 +70,7 @@ class SearchController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/cloudsearch/get/web',
+            'https://music.163.com/api/cloudsearch/pc',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

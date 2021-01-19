@@ -8,3 +8,8 @@ GET http://{{host}}/send/playlist?msg=test&user_ids=475625142&playlist=705123491
 Accept: application/json
 
 ###
+# 发送私信音乐
+GET http://{{host}}/send/song?user_ids=1&id=351318&msg=测试
+Accept: application/json
+
+###

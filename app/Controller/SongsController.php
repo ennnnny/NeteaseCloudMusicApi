@@ -34,9 +34,13 @@ class SongsController extends AbstractController
 
         $cookie = $this->request->getCookieParams();
         if (! isset($cookie['MUSIC_U'])) {
+            $cookie['MUSIC_A'] = $this->getAnonymousToken();
+        }
+        if (! isset($cookie['MUSIC_U'])) {
             $cookie['_ntes_nuid'] = bin2hex($this->commonUtils->randString(16));
         }
-        $cookie['os'] = 'pc';
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.00';
 
         $data['ids'] = '[' . $validated_data['id'] . ']';
         $data['br'] = (int) ($validated_data['br'] ?? 999000);

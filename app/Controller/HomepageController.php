@@ -21,6 +21,9 @@ class HomepageController extends AbstractController
      */
     public function blockPage()
     {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.00';
         $data = [
             'refresh' => $this->request->input('refresh', true),
         ];
@@ -28,7 +31,7 @@ class HomepageController extends AbstractController
             'POST',
             'https://music.163.com/api/homepage/block/page',
             $data,
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $cookie]
         );
     }
 
@@ -40,12 +43,18 @@ class HomepageController extends AbstractController
      */
     public function dragonBall()
     {
+        $cookie = $this->request->getCookieParams();
+        if (! isset($cookie['MUSIC_U'])) {
+            $cookie['MUSIC_A'] = $this->getAnonymousToken();
+        }
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.0.00';
         $data = [];
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/eapi/homepage/dragon/ball/static',
             $data,
-            ['crypto' => 'eapi', 'url' => '/api/homepage/dragon/ball/static', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'eapi', 'url' => '/api/homepage/dragon/ball/static', 'cookie' => $cookie]
         );
     }
 }

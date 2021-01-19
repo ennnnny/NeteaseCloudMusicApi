@@ -15,9 +15,9 @@ class DigitalAlbumController extends AbstractController
 {
     /**
      * 全部新碟
-     * @return \Psr\Http\Message\ResponseInterface
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function new()
     {

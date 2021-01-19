@@ -136,4 +136,20 @@ class MsgController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 最近联系人.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function recentContact()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/msg/recentcontact/get',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

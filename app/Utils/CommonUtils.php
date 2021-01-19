@@ -184,6 +184,22 @@ class CommonUtils
     }
 
     /**
+     * 转布尔型.
+     * @param $val
+     * @return bool|string
+     */
+    public function toBoolean($val)
+    {
+        if (is_bool($val)) {
+            return $val;
+        }
+        if ($val === '') {
+            return $val;
+        }
+        return $val === 'true' || $val == '1';
+    }
+
+    /**
      * @param $string
      * @return string
      */
