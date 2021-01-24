@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
+use Endroid\QrCode\QrCode;
+
 class LoginController extends AbstractController
 {
     /**
@@ -123,25 +125,24 @@ class LoginController extends AbstractController
     public function status()
     {
         $res = $this->createCloudRequest(
-            'GET',
-            'https://music.163.com',
+            'POST',
+            'https://music.163.com/weapi/w/nuser/account/get',
             [],
-            ['cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
-        try {
-            $body = $res->getBody()->getContents();
-            preg_match('/GUser\s*=\s*([^;]+);/', $body, $profile);
-            preg_match('/GBinds\s*=\s*([^;]+);/', $body, $bindings);
-            return $this->response->json([
-                'code' => 200,
-                'profile' => json_decode($profile[1], true),
-                'bindings' => json_decode($bindings[1], true),
-            ]);
-        } catch (\Exception $e) {
-            return $this->response->json([
-                'code' => 301,
-            ])->withStatus(301);
+        $body = $res->getBody()->getContents();
+        $body = json_decode($body, true);
+        if ($res->getStatusCode() == 200 && $body['code'] == 200) {
+//            $cookies = $res->getCookies();
+//            $cookie_temp = head(head($cookies));
+//            $cookie_res = [];
+//            foreach ($cookie_temp as $item) {
+//                $cookie_res[] = $item->__toString();
+//            }
+
+            return $this->response->json(['data' => $body]);
         }
+        return $res;
     }
 
     /**
@@ -158,5 +159,77 @@ class LoginController extends AbstractController
             [],
             ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $this->request->getCookieParams()]
         );
+    }
+
+    /**
+     * 二维码key生成接口.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function qrKey()
+    {
+        $data['type'] = 1;
+        $res = $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/login/qrcode/unikey',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+        $body = $res->getBody()->getContents();
+        $body = json_decode($body, true);
+        return $this->response->json(['data' => $body, 'code' => 200]);
+    }
+
+    /**
+     * 二维码生成接口.
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function qrCreate()
+    {
+        $key = $this->request->input('key');
+        $url = 'https://music.163.com/login?codekey=' . $key;
+        if ($this->request->has('qrimg')) {
+            $qr = new QrCode($url);
+            $qr_img = $qr->writeDataUri();
+        } else {
+            $qr_img = '';
+        }
+        return $this->response->json(['data' => [
+            'qrurl' => $url,
+            'qrimg' => $qr_img,
+        ]]);
+    }
+
+    /**
+     * 二维码检测扫码状态接口.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function qrCheck()
+    {
+        $data['key'] = $this->request->input('key', '');
+        $data['type'] = 1;
+        try {
+            $res = $this->createCloudRequest(
+                'POST',
+                'https://music.163.com/weapi/login/qrcode/client/login',
+                $data,
+                ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            );
+            $body = $res->getBody()->getContents();
+            $body = json_decode($body, true);
+            $cookies = $res->getCookies();
+            $cookie_temp = head(head($cookies));
+            $cookie_res = [];
+            foreach ($cookie_temp as $item) {
+                $cookie_res[] = $item->__toString();
+            }
+            $body['cookie'] = implode(';', $cookie_res);
+            return $this->response->json($body);
+        } catch (\Exception $e) {
+            return $this->response->json([]);
+        }
     }
 }

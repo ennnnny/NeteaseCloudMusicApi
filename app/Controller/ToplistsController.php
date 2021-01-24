@@ -25,7 +25,7 @@ class ToplistsController extends AbstractController
             'POST',
             'https://music.163.com/api/toplist',
             [],
-            ['crypto' => 'linuxapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'api', 'cookie' => $this->request->getCookieParams()]
         );
     }
 

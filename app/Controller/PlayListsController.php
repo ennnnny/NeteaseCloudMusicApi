@@ -355,7 +355,12 @@ class PlayListsController extends AbstractController
             $data,
             ['crypto' => 'weapi', 'cookie' => $cookie]
         );
-        if ($res->getStatusCode() == 512) {
+        $body = $res->getBody()->getContents();
+        $body = json_decode($body, true);
+        if ($body['code'] == 200) {
+            return $res;
+        }
+        if ($body['code'] == 512) {
             $data['trackIds'] = json_encode([$tracks, $tracks]);
             return $this->createCloudRequest(
                 'POST',
@@ -363,6 +368,9 @@ class PlayListsController extends AbstractController
                 $data,
                 ['crypto' => 'weapi', 'cookie' => $cookie]
             );
+        }
+        if ($body['code'] == 521) {
+            return $res;
         }
         return $res;
     }
@@ -542,6 +550,25 @@ class PlayListsController extends AbstractController
             'https://music.163.com/api/playlist/track/delete',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 歌单详情动态
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detailDynamic()
+    {
+        $data['id'] = $this->request->input('id');
+        $data['n'] = 100000;
+        $data['s'] = $this->request->input('s', 8);
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/playlist/detail/dynamic',
+            $data,
+            ['crypto' => 'api', 'cookie' => $this->request->getCookieParams()]
         );
     }
 }

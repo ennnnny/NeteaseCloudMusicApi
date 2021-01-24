@@ -18,6 +18,9 @@ Router::addRoute(['GET', 'POST'], '/login', 'App\Controller\LoginController@logi
 Router::addRoute(['GET', 'POST'], '/login/refresh', 'App\Controller\LoginController@refresh'); //刷新登录
 Router::addRoute(['GET', 'POST'], '/login/status', 'App\Controller\LoginController@status'); //登录状态
 Router::addRoute(['GET', 'POST'], '/logout', 'App\Controller\LoginController@logout'); //退出登录
+Router::addRoute(['GET', 'POST'], '/login/qr/key', 'App\Controller\LoginController@qrKey'); //二维码key生成接口
+Router::addRoute(['GET', 'POST'], '/login/qr/create', 'App\Controller\LoginController@qrCreate'); //二维码生成接口
+Router::addRoute(['GET', 'POST'], '/login/qr/check', 'App\Controller\LoginController@qrCheck'); //二维码检测扫码状态接口
 
 Router::addRoute(['GET', 'POST'], '/captcha/sent', 'App\Controller\RegisterController@sentCaptcha'); //发送验证码
 Router::addRoute(['GET', 'POST'], '/captcha/verify', 'App\Controller\RegisterController@verifyCaptcha'); //校验验证码
@@ -79,6 +82,7 @@ Router::addGroup('/playlist/', function () {
     Router::addRoute(['GET', 'POST'], 'mylike', 'App\Controller\PlayListsController@myLike'); //获取点赞过的视频
     Router::addRoute(['GET', 'POST'], 'track/add', 'App\Controller\PlayListsController@addTrack'); //收藏视频到视频歌单
     Router::addRoute(['GET', 'POST'], 'track/delete', 'App\Controller\PlayListsController@deleteTrack'); //删除视频歌单里的视频
+    Router::addRoute(['GET', 'POST'], 'detail/dynamic', 'App\Controller\PlayListsController@detailDynamic'); //歌单详情动态
 });
 
 Router::addGroup('/event', function () {
@@ -119,6 +123,9 @@ Router::addRoute(['GET', 'POST'], '/batch', 'App\Controller\OthersController@bat
 Router::addRoute(['GET', 'POST'], '/countries/code/list', 'App\Controller\OthersController@getCountryCodeList'); //国家编码列表
 Router::addRoute(['GET', 'POST'], '/calendar', 'App\Controller\OthersController@calendar'); //音乐日历
 Router::addRoute(['GET', 'POST'], '/topic/sublist', 'App\Controller\OthersController@topicSubList'); //收藏的专栏
+Router::addRoute(['GET', 'POST'], '/topic/detail', 'App\Controller\OthersController@topicDetail'); //获取话题详情
+Router::addRoute(['GET', 'POST'], '/topic/detail/event/hot', 'App\Controller\OthersController@topicHotDetail'); //获取话题详情热门动态
+Router::addRoute(['GET', 'POST'], '/cloud', 'App\Controller\OthersController@cloud');
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类

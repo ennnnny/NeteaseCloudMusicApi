@@ -48,3 +48,13 @@ GET http://{{host}}/topic/sublist?limit=2&offset=1
 Accept: application/json
 
 ###
+# 获取话题详情
+GET http://{{host}}/topic/detail?actid=111551188
+Accept: application/json
+
+###
+# 获取话题详情热门动态
+GET http://{{host}}/topic/detail/event/hot?actid=111551188
+Accept: application/json
+
+###

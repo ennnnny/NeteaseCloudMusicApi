@@ -92,7 +92,7 @@ class OthersController extends AbstractController
             'POST',
             'https://music.163.com/api/song/lyric',
             $data,
-            ['crypto' => 'linuxapi', 'cookie' => $cookie]
+            ['crypto' => 'api', 'cookie' => $cookie]
         );
     }
 
@@ -122,7 +122,7 @@ class OthersController extends AbstractController
             'POST',
             'https://music.163.com/api/v2/banner/get',
             ['clientType' => $type],
-            ['crypto' => 'linuxapi']
+            ['crypto' => 'api']
         );
     }
 
@@ -295,6 +295,53 @@ class OthersController extends AbstractController
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/api/topic/sublist',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    public function cloud()
+    {
+        if ($this->request->file('songFile')->isValid()) {
+            $file = $this->request->file('songFile');
+        //TODO:缺少读取音乐文件信息的轮子
+        } else {
+            return $this->response->json([
+                'msg' => '请上传音乐文件',
+                'code' => 500,
+            ])->withStatus(500);
+        }
+    }
+
+    /**
+     * 获取话题详情.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function topicDetail()
+    {
+        $data['actid'] = $this->request->input('actid');
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/act/detail',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 获取话题详情热门动态
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function topicHotDetail()
+    {
+        $data['actid'] = $this->request->input('actid');
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/act/event/hot',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

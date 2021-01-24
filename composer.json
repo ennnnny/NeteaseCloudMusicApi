@@ -39,7 +39,8 @@
         "hyperf/validation": "~2.0.0",
         "ext-openssl": "*",
         "ext-bcmath": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "endroid/qr-code": "^3.9"
     },
     "require-dev": {
         "swoft/swoole-ide-helper": "^4.2",

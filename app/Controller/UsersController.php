@@ -450,7 +450,7 @@ class UsersController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v1/cloud/get',
+            'https://music.163.com/api/v1/cloud/get',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );

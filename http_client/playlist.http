@@ -86,3 +86,8 @@ GET http://{{host}}/playlist/video/recent
 Accept: application/json
 
 ###
+# 歌单详情动态
+GET http://{{host}}/playlist/detail/dynamic?id=24381616
+Accept: application/json
+
+###
