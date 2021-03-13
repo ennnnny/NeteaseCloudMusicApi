@@ -58,3 +58,8 @@ GET http://{{host}}/topic/detail/event/hot?actid=111551188
 Accept: application/json
 
 ###
+# 一起听状态
+GET http://{{host}}/listen/together/status
+Accept: application/json
+
+###

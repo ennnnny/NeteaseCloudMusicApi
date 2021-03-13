@@ -13,3 +13,8 @@ GET http://{{host}}/send/song?user_ids=1&id=351318&msg=测试
 Accept: application/json
 
 ###
+# 发送私信(带专辑)
+GET http://{{host}}/send/album?user_ids=1&id=351318&msg=测试
+Accept: application/json
+
+###

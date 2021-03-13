@@ -286,7 +286,7 @@ class ArtistsController extends AbstractController
     {
         $cookie = $this->request->getCookieParams();
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '8.0.00';
+        $cookie['appver'] = '8.1.20';
 
         $data['limit'] = $this->request->input('limit', 20);
         $data['startTimestamp'] = $this->request->input('before', Carbon::now()->timestamp . '000');
@@ -309,7 +309,7 @@ class ArtistsController extends AbstractController
     {
         $cookie = $this->request->getCookieParams();
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '8.0.00';
+        $cookie['appver'] = '8.1.20';
 
         $data['limit'] = $this->request->input('limit', 20);
         $data['startTimestamp'] = $this->request->input('before', Carbon::now()->timestamp . '000');

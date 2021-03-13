@@ -346,4 +346,20 @@ class OthersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 一起听状态
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function listenTogetherStatus()
+    {
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/listen/together/status/get',
+            [],
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

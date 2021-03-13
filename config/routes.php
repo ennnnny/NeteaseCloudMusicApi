@@ -97,7 +97,6 @@ Router::addGroup('/share/', function () {
 
 Router::addGroup('/comment', function () {
     Router::addRoute(['GET', 'POST'], '/event', 'App\Controller\CommentsController@event'); //获取动态评论
-    Router::addRoute(['GET', 'POST'], '/hotwall/list', 'App\Controller\CommentsController@getHotwallList'); //云村热评
     Router::addRoute(['GET', 'POST'], '/music', 'App\Controller\CommentsController@music'); //歌曲评论
     Router::addRoute(['GET', 'POST'], '/album', 'App\Controller\CommentsController@album'); //专辑评论
     Router::addRoute(['GET', 'POST'], '/playlist', 'App\Controller\CommentsController@playlist'); //歌单评论
@@ -126,6 +125,7 @@ Router::addRoute(['GET', 'POST'], '/topic/sublist', 'App\Controller\OthersContro
 Router::addRoute(['GET', 'POST'], '/topic/detail', 'App\Controller\OthersController@topicDetail'); //获取话题详情
 Router::addRoute(['GET', 'POST'], '/topic/detail/event/hot', 'App\Controller\OthersController@topicHotDetail'); //获取话题详情热门动态
 Router::addRoute(['GET', 'POST'], '/cloud', 'App\Controller\OthersController@cloud');
+Router::addRoute(['GET', 'POST'], '/listen/together/status', 'App\Controller\OthersController@listenTogetherStatus'); //一起听状态
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
@@ -277,7 +277,8 @@ Router::addGroup('/msg/', function () {
 Router::addGroup('/send/', function () {
     Router::addRoute(['GET', 'POST'], 'text', 'App\Controller\SendController@text'); //发送私信
     Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\SendController@playlist'); //发送私信(带歌单)
-    Router::addRoute(['GET', 'POST'], 'song', 'App\Controller\SendController@song'); //发送私信音乐
+    Router::addRoute(['GET', 'POST'], 'song', 'App\Controller\SendController@song'); //发送私信(带歌曲)
+    Router::addRoute(['GET', 'POST'], 'album', 'App\Controller\SendController@album'); //发送私信(带专辑)
 });
 
 Router::addGroup('/history/', function () {

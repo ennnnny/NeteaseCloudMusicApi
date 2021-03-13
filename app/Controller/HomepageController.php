@@ -23,7 +23,7 @@ class HomepageController extends AbstractController
     {
         $cookie = $this->request->getCookieParams();
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '8.0.00';
+        $cookie['appver'] = '8.1.20';
         $data = [
             'refresh' => $this->request->input('refresh', true),
         ];
@@ -48,7 +48,7 @@ class HomepageController extends AbstractController
             $cookie['MUSIC_A'] = $this->getAnonymousToken();
         }
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '8.0.00';
+        $cookie['appver'] = '8.1.20';
         $data = [];
         return $this->createCloudRequest(
             'POST',

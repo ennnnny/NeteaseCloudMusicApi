@@ -189,6 +189,7 @@ class UsersController extends AbstractController
             'uid' => 'required',
             'limit' => '',
             'lasttime' => '',
+            'offset' => '',
         ], [
             'uid.required' => '用户ID必填',
         ]);
@@ -199,8 +200,10 @@ class UsersController extends AbstractController
         }
         $data = $validator->validated();
         $data['limit'] = $data['limit'] ?? 30;
-        $data['time'] = $data['lasttime'] ?? -1;
+        $data['time'] = '0';
         $data['userId'] = $data['uid'];
+        $data['offset'] = $data['offset'] ?? 0;
+        $data['getcounts'] = 'true';
         unset($data['uid'], $data['lasttime']);
 
         return $this->createCloudRequest(
@@ -234,7 +237,7 @@ class UsersController extends AbstractController
 
         $cookie = $this->request->getCookieParams();
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '8.0.0';
+        $cookie['appver'] = '8.1.20';
 
         $data = $validator->validated();
         $uid = $data['uid'];
@@ -373,6 +376,7 @@ class UsersController extends AbstractController
         $time = $validator_data['time'] ?? 25;
         $data['trackId'] = $validator_data['id'];
         $data['like'] = $this->commonUtils->toBoolean($validator_data['like']);
+        $data['like'] = $data['like'] ?? false;
 
         return $this->createCloudRequest(
             'POST',

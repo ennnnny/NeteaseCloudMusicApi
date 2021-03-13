@@ -131,7 +131,6 @@ class SongsController extends AbstractController
         }
         $data = [
             'c' => '[' . implode(',', $temp_lists) . ']',
-            'ids' => '[' . $validated_data['ids'] . ']',
         ];
         return $this->createCloudRequest(
             'POST',

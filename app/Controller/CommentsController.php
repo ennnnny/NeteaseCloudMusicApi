@@ -58,22 +58,6 @@ class CommentsController extends AbstractController
     }
 
     /**
-     * 云村热评.
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getHotwallList()
-    {
-        return $this->createCloudRequest(
-            'POST',
-            'https://music.163.com/api/comment/hotwall/list/get',
-            [],
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
-        );
-    }
-
-    /**
      * 歌曲评论.
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\SimpleCache\InvalidArgumentException
@@ -497,7 +481,7 @@ class CommentsController extends AbstractController
     {
         $cookie = $this->request->getCookieParams();
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '7.3.27';
+        $cookie['appver'] = '8.1.20';
 
         $query_data = $this->request->all();
         $type = $this->type_list[($query_data['type'] ?? 0)];
@@ -528,7 +512,7 @@ class CommentsController extends AbstractController
     {
         $cookie = $this->request->getCookieParams();
         $cookie['os'] = 'ios';
-        $cookie['appver'] = '8.0.00';
+        $cookie['appver'] = '8.1.20';
 
         $query_data = $this->request->all();
         $type = $this->type_list[($query_data['type'] ?? 0)];

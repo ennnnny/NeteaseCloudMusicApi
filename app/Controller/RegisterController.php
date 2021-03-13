@@ -38,7 +38,7 @@ class RegisterController extends AbstractController
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/sms/captcha/sent',
+            'https://music.163.com/api/sms/captcha/sent',
             $data,
             ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $this->request->getCookieParams()]
         );
@@ -124,6 +124,7 @@ class RegisterController extends AbstractController
             'captcha' => 'required',
             'password' => 'required',
             'nickname' => 'required',
+            'countrycode' => '',
         ], [
             'phone.required' => '手机号必填',
             'phone.regex' => '手机号格式错误',
@@ -138,6 +139,7 @@ class RegisterController extends AbstractController
         }
         $data = $validator->validated();
         $data['password'] = md5($data['password']);
+        $data['countrycode'] = $data['countrycode'] ?? '86';
         return $this->createCloudRequest(
             'POST',
             'https://music.163.com/api/register/cellphone',
