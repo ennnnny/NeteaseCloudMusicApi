@@ -47,12 +47,30 @@ class LoginController extends AbstractController
             $data['countrycode'] = '86';
         }
         $data['password'] = md5($data['password']);
-        return $this->createCloudRequest(
+
+        $res = $this->createCloudRequest(
             'POST',
             'https://music.163.com/weapi/login/cellphone',
             $data,
             ['crypto' => 'weapi', 'ua' => 'pc', 'cookie' => $cookie]
         );
+        if ($res->getStatusCode() == 200) {
+            $new_res = $this->response;
+
+            $body = $res->getBody()->getContents();
+            $body = json_decode($body, true);
+            $cookies = $res->getCookies();
+            $cookie_temp = head(head($cookies));
+            $cookie_res = [];
+            foreach ($cookie_temp as $item) {
+                $cookie_res[] = $item->__toString();
+                $new_res = $new_res->withCookie($item);
+            }
+            $body['cookie'] = implode(';', $cookie_res);
+            return $new_res->json($body)->withStatus(200);
+        }
+
+        return $res;
     }
 
     /**
