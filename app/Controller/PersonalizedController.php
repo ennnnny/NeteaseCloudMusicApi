@@ -57,15 +57,18 @@ class PersonalizedController extends AbstractController
      */
     public function newsong()
     {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'pc';
+
         $data['type'] = 'recommend';
         $data['limit'] = $this->request->input('limit', 10);
         $data['areaId'] = $this->request->input('areaId', 0);
 
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/personalized/newsong',
+            'https://music.163.com/api/personalized/newsong',
             $data,
-            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+            ['crypto' => 'weapi', 'cookie' => $cookie]
         );
     }
 
