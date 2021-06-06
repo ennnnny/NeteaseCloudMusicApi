@@ -337,4 +337,26 @@ class ArtistsController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 歌手粉丝.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function fans()
+    {
+        $data = [
+            'id' => $this->request->input('id'),
+            'limit' => $this->request->input('limit', 20),
+            'offset' => $this->request->input('offset', 0),
+        ];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/artist/fans/get',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

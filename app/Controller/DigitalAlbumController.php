@@ -91,4 +91,40 @@ class DigitalAlbumController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 数字专辑详情.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function detail()
+    {
+        $data['id'] = $this->request->input('id');
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/vipmall/albumproduct/detail',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 数字专辑销量.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function sales()
+    {
+        $data['albumIds'] = $this->request->input('ids');
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/vipmall/albumproduct/album/query/sales',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

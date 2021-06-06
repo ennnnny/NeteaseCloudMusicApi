@@ -9,3 +9,13 @@ GET http://{{host}}/digitalAlbum/ordering?id=86286082&payment=3&quantity=1
 Accept: application/json
 
 ###
+# 数字专辑详情
+GET http://{{host}}/digitalAlbum/detail?id=120605500
+Accept: application/json
+
+###
+# 数字专辑销量
+GET http://{{host}}/digitalAlbum/sales?ids=120605500,125080528
+Accept: application/json
+
+###

@@ -1,0 +1,15 @@
+# vip成长值
+GET http://{{host}}/vip/growthpoint
+Accept: application/json
+
+###
+# 会员成长值领取记录
+GET http://{{host}}/vip/growthpoint/details?limit=10
+Accept: application/json
+
+###
+# vip任务
+GET http://{{host}}/vip/tasks
+Accept: application/json
+
+###

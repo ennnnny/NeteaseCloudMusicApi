@@ -46,6 +46,7 @@ Router::addGroup('/user/', function () {
     Router::addRoute(['GET', 'POST'], 'level', 'App\Controller\UsersController@level'); //获取用户等级信息
     Router::addRoute(['GET', 'POST'], 'binding', 'App\Controller\UsersController@binding'); //获取用户绑定信息
     Router::addRoute(['GET', 'POST'], 'account', 'App\Controller\UsersController@account'); //获取账号信息
+    Router::addRoute(['GET', 'POST'], 'comment/history', 'App\Controller\UsersController@historyComment'); //获取用户历史评论
 });
 Router::addRoute(['GET', 'POST'], '/follow', 'App\Controller\UsersController@follow'); //关注/取消关注用户
 Router::addRoute(['GET', 'POST'], '/personal_fm', 'App\Controller\UsersController@getPersonalFm'); //私人 FM
@@ -60,6 +61,8 @@ Router::addGroup('/digitalAlbum/', function () {
     Router::addRoute(['GET', 'POST'], 'new', 'App\Controller\DigitalAlbumController@new'); //全部新碟
     Router::addRoute(['GET', 'POST'], 'purchased', 'App\Controller\DigitalAlbumController@digitalAlbumPurchased'); //我的数字专辑
     Router::addRoute(['GET', 'POST'], 'ordering', 'App\Controller\DigitalAlbumController@ordering'); //购买数字专辑
+    Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\DigitalAlbumController@detail'); //数字专辑详情
+    Router::addRoute(['GET', 'POST'], 'sales', 'App\Controller\DigitalAlbumController@sales'); //数字专辑销量
 });
 
 Router::addGroup('/playlist/', function () {
@@ -124,8 +127,12 @@ Router::addRoute(['GET', 'POST'], '/calendar', 'App\Controller\OthersController@
 Router::addRoute(['GET', 'POST'], '/topic/sublist', 'App\Controller\OthersController@topicSubList'); //收藏的专栏
 Router::addRoute(['GET', 'POST'], '/topic/detail', 'App\Controller\OthersController@topicDetail'); //获取话题详情
 Router::addRoute(['GET', 'POST'], '/topic/detail/event/hot', 'App\Controller\OthersController@topicHotDetail'); //获取话题详情热门动态
-Router::addRoute(['GET', 'POST'], '/cloud', 'App\Controller\OthersController@cloud');
 Router::addRoute(['GET', 'POST'], '/listen/together/status', 'App\Controller\OthersController@listenTogetherStatus'); //一起听状态
+
+Router::addGroup('/cloud', function () {
+    Router::addRoute(['GET', 'POST'], '', 'App\Controller\CloudController@cloud');
+    Router::addRoute(['GET', 'POST'], '/match', 'App\Controller\CloudController@match'); //云盘歌曲信息匹配纠正
+});
 
 Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'list', 'App\Controller\ArtistsController@getList'); //歌手分类
@@ -139,6 +146,7 @@ Router::addGroup('/artist/', function () {
     Router::addRoute(['GET', 'POST'], 'new/mv', 'App\Controller\ArtistsController@newMv'); //关注歌手新MV
     Router::addRoute(['GET', 'POST'], 'new/song', 'App\Controller\ArtistsController@newSong'); //关注歌手新歌
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\ArtistsController@detail'); //获取歌手详情
+    Router::addRoute(['GET', 'POST'], 'fans', 'App\Controller\ArtistsController@fans'); //歌手粉丝
 });
 Router::addRoute(['GET', 'POST'], '/artists', 'App\Controller\ArtistsController@getInfo'); //获取歌手单曲
 
@@ -164,6 +172,8 @@ Router::addGroup('/mv/', function () {
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\MvController@url'); //mv 地址
     Router::addRoute(['GET', 'POST'], 'detail/info', 'App\Controller\MvController@getDetailInfo'); //获取 mv 点赞转发评论数数据
 });
+Router::addRoute(['GET', 'POST'], '/mlog/url', 'App\Controller\MvController@mlogUrl'); //获取mlog播放地址
+Router::addRoute(['GET', 'POST'], '/mlog/to/video', 'App\Controller\MvController@mlogToVideo'); //将mlog id转为视频id
 
 Router::addGroup('/top/', function () {
     Router::addRoute(['GET', 'POST'], 'playlist', 'App\Controller\TopsController@playlist'); //歌单 ( 网友精选碟 )
@@ -190,6 +200,7 @@ Router::addGroup('/song/', function () {
     Router::addRoute(['GET', 'POST'], 'url', 'App\Controller\SongsController@getUrl'); // 获取音乐 url
     Router::addRoute(['GET', 'POST'], 'detail', 'App\Controller\SongsController@getDetail'); //获取歌曲详情
     Router::addRoute(['GET', 'POST'], 'order/update', 'App\Controller\SongsController@updateOrder'); //调整歌曲顺序
+    Router::addRoute(['GET', 'POST'], 'purchased', 'App\Controller\SongsController@purchased'); //已购单曲
 });
 Router::addRoute(['GET', 'POST'], '/check/music', 'App\Controller\SongsController@checkMusic'); //音乐是否可用
 
@@ -301,4 +312,21 @@ Router::addGroup('/yunbei', function () {
     Router::addRoute(['GET', 'POST'], '/tasks', 'App\Controller\YunBeiController@task'); //云贝所有任务
     Router::addRoute(['GET', 'POST'], '/tasks/todo', 'App\Controller\YunBeiController@taskTodo'); //云贝todo任务
     Router::addRoute(['GET', 'POST'], '/today', 'App\Controller\YunBeiController@today'); //云贝今日签到信息
+    Router::addRoute(['GET', 'POST'], '/rcmd/song', 'App\Controller\YunBeiController@rcmdSong'); //云贝推歌
+    Router::addRoute(['GET', 'POST'], '/rcmd/song/history', 'App\Controller\YunBeiController@rcmdSongHistory'); //云贝推歌历史记录
+});
+
+Router::addGroup('/vip', function () {
+    Router::addRoute(['GET', 'POST'], '/growthpoint', 'App\Controller\VipController@growthPoint'); //vip成长值
+    Router::addRoute(['GET', 'POST'], '/growthpoint/details', 'App\Controller\VipController@growthPointDetails'); //会员成长值领取记录
+    Router::addRoute(['GET', 'POST'], '/tasks', 'App\Controller\VipController@tasks'); //vip任务
+    Router::addRoute(['GET', 'POST'], '/growthpoint/get', 'App\Controller\VipController@getGrowthPoint'); //领取vip成长值
+});
+
+Router::addGroup('/musician', function () {
+    Router::addRoute(['GET', 'POST'], '/data/overview', 'App\Controller\MusicianController@dataOverview'); //音乐人数据概况
+    Router::addRoute(['GET', 'POST'], '/play/trend', 'App\Controller\MusicianController@playTrend'); //音乐人播放趋势
+    Router::addRoute(['GET', 'POST'], '/tasks', 'App\Controller\MusicianController@tasks'); //音乐人任务
+    Router::addRoute(['GET', 'POST'], '/cloudbean', 'App\Controller\MusicianController@cloudbean'); //账号云豆数
+    Router::addRoute(['GET', 'POST'], '/cloudbean/obtain', 'App\Controller\MusicianController@obtainCloudbean'); //领取云豆
 });

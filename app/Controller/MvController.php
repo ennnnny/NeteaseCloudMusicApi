@@ -213,4 +213,44 @@ class MvController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取mlog播放地址
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function mlogUrl()
+    {
+        $data = [
+            'id' => $this->request->input('id'),
+            'resolution' => $this->request->input('res', 1080),
+            'type' => 1,
+        ];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/mlog/detail/v1',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 将mlog id转为视频id.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function mlogToVideo()
+    {
+        $data['mlogId'] = $this->request->input('id');
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/mlog/video/convert/id',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

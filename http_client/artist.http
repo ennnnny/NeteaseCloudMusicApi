@@ -58,3 +58,8 @@ GET http://{{host}}/artist/detail?id=11972054
 Accept: application/json
 
 ###
+# 歌手粉丝
+GET http://{{host}}/artist/fans?id=2116&limit=10&offset=0
+Accept: application/json
+
+###

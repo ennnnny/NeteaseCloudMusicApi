@@ -643,4 +643,30 @@ class UsersController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 获取用户历史评论.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function historyComment()
+    {
+        $cookie = $this->request->getCookieParams();
+        $cookie['os'] = 'ios';
+        $cookie['appver'] = '8.1.20';
+
+        $data['compose_reminder'] = 'true';
+        $data['compose_hot_comment'] = 'true';
+        $data['limit'] = $this->request->input('limit', 10);
+        $data['user_id'] = $this->request->input('uid');
+        $data['time'] = $this->request->input('time', 0);
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/api/comment/user/comment/history',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $cookie]
+        );
+    }
 }

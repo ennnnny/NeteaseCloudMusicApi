@@ -163,4 +163,45 @@ class YunBeiController extends AbstractController
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
+
+    /**
+     * 云贝推歌.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function rcmdSong()
+    {
+        $data['songId'] = $this->request->input('id');
+        $data['reason'] = $this->request->input('reason', '好歌献给你');
+        $data['scene'] = '';
+        $data['fromUserId'] = -1;
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/yunbei/rcmd/song/submit',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
+
+    /**
+     * 云贝推歌历史记录.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function rcmdSongHistory()
+    {
+        $page['size'] = $this->request->input('size', 20);
+        $page['cursor'] = $this->request->input('cursor', '');
+        $data['page'] = json_encode($page);
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/yunbei/rcmd/song/history/list',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
+        );
+    }
 }

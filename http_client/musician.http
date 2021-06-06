@@ -1,0 +1,25 @@
+# 音乐人数据概况
+GET http://{{host}}/musician/data/overview
+Accept: application/json
+
+###
+# 音乐人播放趋势
+GET http://{{host}}/musician/play/trend?startTime=2021-05-24&endTime=2021-05-30
+Accept: application/json
+
+###
+# 音乐人任务
+GET http://{{host}}/musician/tasks
+Accept: application/json
+
+###
+# 账号云豆数
+GET http://{{host}}/musician/cloudbean
+Accept: application/json
+
+###
+# 领取云豆
+GET http://{{host}}/musician/cloudbean/obtain?id=7036416928&period=1
+Accept: application/json
+
+###

@@ -43,3 +43,13 @@ GET http://{{host}}/yunbei/today
 Accept: application/json
 
 ###
+# 云贝推歌
+GET http://{{host}}/yunbei/rcmd/song?id=65528&reason=人间好声音推荐给你听
+Accept: application/json
+
+###
+# 云贝推歌历史记录
+GET http://{{host}}/yunbei/rcmd/song/history?size=10
+Accept: application/json
+
+###

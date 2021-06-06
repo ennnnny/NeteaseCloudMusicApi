@@ -134,7 +134,7 @@ class SongsController extends AbstractController
         ];
         return $this->createCloudRequest(
             'POST',
-            'https://music.163.com/weapi/v3/song/detail',
+            'https://music.163.com/api/v3/song/detail',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
@@ -168,6 +168,27 @@ class SongsController extends AbstractController
             'https://interface.music.163.com/api/playlist/manipulate/tracks',
             $data,
             ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams(), 'url' => '/api/playlist/desc/update']
+        );
+    }
+
+    /**
+     * 已购单曲.
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function purchased()
+    {
+        $data = [
+            'limit' => $this->request->input('limit', 20),
+            'offset' => $this->request->input('offset', 0),
+        ];
+
+        return $this->createCloudRequest(
+            'POST',
+            'https://music.163.com/weapi/single/mybought/song/list',
+            $data,
+            ['crypto' => 'weapi', 'cookie' => $this->request->getCookieParams()]
         );
     }
 }

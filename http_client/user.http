@@ -117,3 +117,7 @@ GET http://{{host}}/user/account
 Accept: application/json
 
 ###
+GET http://{{host}}/user/comment/history?uid=32953014&limit=1&time=1616217577564
+Accept: application/json
+
+###

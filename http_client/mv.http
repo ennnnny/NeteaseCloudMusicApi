@@ -43,3 +43,13 @@ GET http://{{host}}/mv/detail/info?mvid=5436712
 Accept: application/json
 
 ###
+# 获取mlog播放地址
+GET http://{{host}}/mlog/url?id=a1qOVPTWKS1ZrK8
+Accept: application/json
+
+###
+# 将mlog id转为视频id
+GET http://{{host}}/mlog/to/video?id=a1qOVPTWKS1ZrK8
+Accept: application/json
+
+###

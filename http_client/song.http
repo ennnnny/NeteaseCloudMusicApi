@@ -18,3 +18,8 @@ GET http://{{host}}/song/order/update?pid=2039116066&ids=[5268328,1219871]
 Accept: application/json
 
 ###
+# 已购单曲
+GET http://{{host}}/song/purchased?limit=10
+Accept: application/json
+
+###

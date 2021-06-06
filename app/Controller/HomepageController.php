@@ -25,7 +25,8 @@ class HomepageController extends AbstractController
         $cookie['os'] = 'ios';
         $cookie['appver'] = '8.1.20';
         $data = [
-            'refresh' => $this->request->input('refresh', true),
+            'refresh' => $this->request->input('refresh', false),
+            'cursor' => $this->request->input('cursor'),
         ];
         return $this->createCloudRequest(
             'POST',
